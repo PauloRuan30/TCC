@@ -1,0 +1,42 @@
+\chapter{Introdução}
+\label{cap:introducao}
+
+A automação industrial tem desempenhado um papel fundamental na otimização de processos de produção e na busca por maior eficiência operacional. Nesse contexto, braços robóticos, como os da série Mitsubishi RV-2SDB/RV-2SQB, emergem como ferramentas essenciais para a execução de tarefas complexas com precisão e repetitividade. Contudo, muitas empresas enfrentam desafios para manter esses equipamentos atualizados e funcionais, especialmente quando a manutenção depende de fornecedores externos, o que eleva custos e tempo de inatividade.
+
+Neste trabalho, propõe-se a criação de uma Interface Homem-Máquina (IHM) para controlar um braço robótico, atendendo a uma demanda específica de reparo e retrofit do modelo Mitsubishi RV-2SDB/RV-2SQB. A solução, desenvolvida em um ambiente de baixo custo e baseada em bibliotecas open source, visa não apenas suprir a necessidade de controle manual e automático do robô, mas também oferecer uma base reutilizável para reparos e aprimoramentos em outros contextos industriais. Um dos destaques é a incorporação de uma simulação 3D em tempo real, permitindo ao operador visualizar e acompanhar os movimentos do braço robótico em um ambiente virtual sincronizado com a execução física.
+
+A relevância do projeto reside na:
+\begin{alineas}
+    \item Viabilizar uma alternativa econômica para manutenção de robôs em cenários com recursos limitados.
+    \item Criar um software de controle que integra joystick, interface gráfica e simulação 3D, ampliando a usabilidade e o entendimento das operações
+    \item Possibilitar compartilhamento e aprimoramento contínuo, já que o código segue uma filosofia open source, beneficiando o meio acadêmico e industrial.
+\end{alineas}
+
+Este documento descreve a fundamentação teórica que embasa o desenvolvimento, a abordagem metodológica adotada, os resultados obtidos e as implicações práticas no setor industrial e na comunidade acadêmica. Espera-se demonstrar que a combinação de controle manual, ajustes automáticos e visualização 3D online pode proporcionar maior confiabilidade, usabilidade e escalabilidade às soluções de automação.
+
+\section{Motivação}
+\label{sec:motivacao}
+
+A motivação central deste trabalho surge da necessidade de reparo e aprimoramento de um braço robótico \textit{Mitsubishi RV-2SDB/RV-2SQB}, cujo suporte especializado tornou-se inviável devido a restrições orçamentárias. Assim, a abordagem escolhida foca em soluções de baixo custo e ferramentas open source, unificando controle manual, monitoramento automático e simulação 3D.
+
+Em cenários industriais, a inatividade de um robô devido a falhas em módulos de controle gera prejuízos financeiros e produtivos. Uma IHM que facilite ajustes de velocidade, posicionamento e correção de falhas, além de oferecer simulação 3D realista, pode reduzir tempos de parada e retrabalho. A motivação, portanto, combina fatores econômicos, técnicos e operacionais, buscando uma solução modular e flexível.
+
+\section{Objetivos}
+\label{sec:objetivos}
+
+Os objetivos geral e específicos deste projeto visam oferecer uma solução completa para controle e monitoramento do braço robótico Mitsubishi RV-2SDB/RV-2SQB em ambiente industrial. A aplicação integra \textit{firmware}, \textit{software} e interface gráfica, com simulação 3D em tempo real para melhorar visualização e diagnóstico.
+\subsection{Objetivo Geral}
+\label{sec:objetivo-geral}
+
+Desenvolver uma \textbf{Interface Homem-Máquina} robusta, econômica e \textit{open source} para controle de um braço robótico, permitindo tanto operação manual (por \textit{joystick}) quanto ajustes automáticos, além de oferecer uma simulação 3D em tempo real que reflita os movimentos e estados do robô.
+
+\subsection{Objetivos Específicos}
+\label{sec:objetivos-especificos}
+
+\begin{alineas}
+    \item Projetar e implementar o \textit{firmware} de controle, definindo um protocolo de comunicação de 32 bits para \textit{hardware} como \textit{ESP32} e \textit{FPGA}, incluindo recursos de freio, \textit{reverse} e ajuste de velocidade;
+    \item Integrar um dispositivo \textit{joystick} à interface gráfica, de modo a fornecer um controle manual intuitivo para o operador;
+    \item Desenvolver e incorporar uma simulação 3D em tempo real, sincronizada com as ações do braço robótico, possibilitando a identificação de falhas e otimização dos parâmetros de controle;
+    \item Avaliar o desempenho do sistema em cenários de testes, verificando latência, confiabilidade e consumo de recursos do \textit{host} e do \textit{microcontrolador};
+    \item Documentar o projeto em formato \textit{open source}, compartilhando bibliotecas e instruções que facilitem o \textit{retrofit} de outros braços robóticos ou equipamentos industriais legados.
+\end{alineas}
