@@ -77,6 +77,17 @@ O software foi implementado em C++, com módulos separados:
     \item Interface Gráfica: Exibição e ajuste de parâmetros via ImGui.
 \end{alineascomnumero}
 
+Implementando estes algoritmos para cinematica inversa e detecção e resolução de colisão em tempo real:
+
+\begin{alineascomnumero}
+\item FABRIK(cinemática inversa de alcance para frente e para trás): Carregamento e renderização do modelo 3D usando OpenGL e Assimp.
+\item GGD(Descida de coordenação ciclica): Gerenciamento de entradas via SDL (teclado, joystick).
+\item GJK(Gilbert Johnson Keerthi): Cálculo e resolução de colisão com fisicas \textit{rigid body} em tempo real.
+\item EPA(Algoritmo de expanção de politopo):
+\item Adição de Minkowski: Função suporte para o algoritmo de GJK.
+\item Sistema de arbitração
+\end{alineascomnumero}
+
 \begin{algorithm}[h!]
 	\SetSpacedAlgorithm
 	\caption{\label{exemplo-de-algoritmo}Como escrever algoritmos no \LaTeX2e}
