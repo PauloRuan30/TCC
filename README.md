@@ -78,22 +78,9 @@ Veja a seguir como inserir alguns elementos no seu texto.
 \end{figure}
 ```
 
-### Como inserir uma alínea
-```tex
-\begin{alineas}
-	\item Lorem ipsum dolor sit amet;
-    \item Praesent vitae nulla varius;
-	\item Praesent quis erat eleifend;
-	\item Mauris facilisis odio eu:
-	\begin{subalineas}
-		\item Integer non lacinia magna;
-		\item Proin mattis placerat risus.
-	\end{subalineas}
-\end{alineas}
-```
-
 ### Como criar Capítulos
 ```tex
+
 \chapter{Fundamentação Teórica}
 \label{cap:fundamentacao-teorica}
 ```
@@ -137,7 +124,3 @@ Veja a seguir como inserir alguns elementos no seu texto.
 	}
 \end{algorithm}
 ```
-
-# Atenção
-
-O UniforTeX2 é fornecido gratuitamente e sem garantias e pode ser redistribuído livremente para fins acadêmicos. O UniforTeX2 é um produto extra-oficial e não está oficialmente vinculada à Universidade de Fortaleza - Unifor.
