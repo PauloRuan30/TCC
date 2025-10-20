@@ -1,21 +1,21 @@
 \chapter{Fundamentação Teórica}
 \label{cap:fundamentacao-teorica}
 
-A modernização de equipamentos industriais por meio de técnicas de \textit{retrofit} é cada vez mais relevante no contexto da Indústria 4.0. Avanços em microeletrônica e sistemas embarcados permitem atualizar módulos de controle, como os do Mitsubishi RV-2SDB/RV-2SQB, sem a necessidade de substituir máquinas inteiras, reduzindo custos e prolongando sua vida útil. Este capítulo apresenta os conceitos que sustentam o desenvolvimento da IHM proposta, com ênfase nas tecnologias de controle e simulação 3D.
+A simulação computacional de sistemas robóticos é cada vez mais relevante no contexto educacional e de pesquisa. Avanços em computação gráfica e algoritmos de cinemática permitem criar ambientes virtuais realistas para o estudo de robôs, como o Mitsubishi RV-2SDB/RV-2SQB, sem a necessidade de equipamentos físicos caros, facilitando o aprendizado e reduzindo custos. Este capítulo apresenta os conceitos que sustentam o desenvolvimento do software de simulação proposto, com ênfase nas tecnologias de visualização 3D e modelagem cinemática.
 
 \section{Conceitos de Robótica Industrial}
 \label{sec:fundamentacao-teorica-a}
 
-Braços robóticos industriais, como o Mitsubishi RV-2SDB/RV-2SQB, operam com base em cinemática direta e inversa para calcular posições e velocidades das juntas em tarefas precisas. A cinemática direta determina a posição e orientação do efetuador final a partir dos ângulos das juntas, enquanto a cinemática inversa faz o oposto, encontrando os ângulos das juntas para uma dada posição do efetuador. O robô Mitsubishi RV-2SDB/RV-2SQB, com 6 eixos, possui especificações como alcance de ±240° para a junta J1, velocidade máxima de 4.490 mm/s, repetibilidade de ±0.02 mm, e capacidade de carga de 2 kg, conforme o manual técnico [1]. Esses parâmetros são essenciais para a modelagem cinemática no software de simulação.
+Braços robóticos industriais, como o Mitsubishi RV-2SDB/RV-2SQB, operam com base em cinemática direta e inversa para calcular posições e velocidades das juntas em tarefas precisas. A cinemática direta determina a posição e orientação do efetuador final a partir dos ângulos das juntas, enquanto a cinemática inversa faz o oposto, encontrando os ângulos das juntas para uma dada posição do efetuador. O robô Mitsubishi RV-2SDB/RV-2SQB, com 6 eixos, possui especificações como alcance de ±240° para a junta J1, velocidade máxima de 4.490 mm/s, repetibilidade de ±0.02 mm, e capacidade de carga de 2 kg, conforme o manual técnico. Esses parâmetros são essenciais para a modelagem cinemática no software de simulação.
 
-\section{Tecnologias de Controle}
+\section{Tecnologias de Simulação}
 \label{sec:fundamentacao-teorica-b}
 
-A integração de hardware para controle preciso do robô é fundamental. O firmware gerencia sinais para controlar os motores, ajustando velocidade e direção. Bibliotecas open source, como SDL (Simple DirectMedia Layer), facilitam a conexão com dispositivos de entrada, como joysticks, permitindo controle manual intuitivo. A interface gráfica, desenvolvida com ImGui, exibe estados do robô e permite ajustes interativos, melhorando a usabilidade.
+A integração de bibliotecas gráficas para simulação precisa do robô é fundamental. Bibliotecas open source, como SDL (Simple DirectMedia Layer), facilitam a criação de interfaces interativas, permitindo controle intuitivo da simulação. A interface gráfica, desenvolvida com ImGui, exibe parâmetros do robô e permite ajustes interativos, melhorando a usabilidade educacional.
 
  \begin{figure}[h!]
     \centering
-	\Caption{\label{fig:Figura-1}  Fluxo de dados entre o sistema de controle e a simulação 3D, ilustrando a sincronia entre movimentos reais e virtuais.}	
+	\Caption{\label{fig:Figura-1}  Fluxo de dados entre o sistema de simulação 3D e a interface gráfica, ilustrando a interação entre entrada do usuário e visualização virtual.}	
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=8cm]{figuras/figura-2}}
 	}{
@@ -23,21 +23,21 @@ A integração de hardware para controle preciso do robô é fundamental. O firm
 	}	
 \end{figure}
 
-A Figura~\ref{fig:Figura-1} exibe um diagrama mostrando a interação entre o firmware, o software de controle, e a simulação 3D, com dados de entrada do joystick e saída visual na interface gráfica.
+A Figura~\ref{fig:Figura-1} exibe um diagrama mostrando a interação entre o software de simulação, a interface gráfica, e a visualização 3D, com dados de entrada do usuário e saída visual na simulação.
 
 \section{Simulação 3D em Tempo Real}
 \label{sec:fundamentacao-teorica-c}
 
-A simulação 3D em tempo real permite ao operador visualizar os movimentos do robô em um ambiente virtual, facilitando o monitoramento e a detecção de falhas. Utilizando OpenGL para renderização, GLM para cálculos de algebra linear, e Assimp para carregar modelos 3D (e.g.,\textit{rv2sdb.obj}), o software representa fielmente o robô e seus movimentos. A simulação reflete as especificações do robô, como o alcance de ±240° da junta J1, garantindo precisão visual.
+A simulação 3D em tempo real permite ao usuário visualizar os movimentos do robô em um ambiente virtual, facilitando a compreensão da cinemática e o aprendizado. Utilizando OpenGL para renderização, GLM para cálculos de algebra linear, e Assimp para carregar modelos 3D (e.g.,\textit{rv2sdb.obj}), o software representa fielmente o robô e seus movimentos. A simulação reflete as especificações do robô, como o alcance de ±240° da junta J1, garantindo precisão visual e educacional.
 
 \section{Design de Software}
 \label{sec:fundamentacao-teorica-d}
 
-O software foi desenvolvido seguindo princípios de modularidade, com separação de preocupações entre renderização, entrada de dados, cinemática, e interface gráfica. Isso permite manutenção e escalabilidade, facilitando a adaptação para outros robôs ou aplicações industriais. A arquitetura modular é suportada por bibliotecas como fmt para logging e xmake para gerenciamento de compilação.
+O software foi desenvolvido seguindo princípios de modularidade, com separação de preocupações entre renderização, entrada de dados, cinemática, e interface gráfica. Isso permite manutenção e escalabilidade, facilitando a adaptação para outros robôs ou aplicações educacionais. A arquitetura modular é suportada por bibliotecas como fmt para logging e xmake para gerenciamento de compilação.
 
  \begin{figure}[h!]
     \centering
-	\Caption{\label{fig:Figura-2}  Representação esquemática da camada digital, destacando a geração de sinais de controle.}	
+	\Caption{\label{fig:Figura-2}  Representação esquemática da arquitetura do software, destacando os módulos de simulação e renderização.}	
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=8cm]{figuras/figura-2}}
 	}{

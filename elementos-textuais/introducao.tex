@@ -3,40 +3,34 @@
 
 A automação industrial tem desempenhado um papel fundamental na otimização de processos de produção e na busca por maior eficiência operacional. Nesse contexto, braços robóticos, como os da série Mitsubishi RV-2SDB/RV-2SQB, emergem como ferramentas essenciais para a execução de tarefas complexas com precisão e repetitividade. Contudo, muitas empresas enfrentam desafios para manter esses equipamentos atualizados e funcionais, especialmente quando a manutenção depende de fornecedores externos, o que eleva custos e tempo de inatividade.
 
-Neste trabalho, propõe-se a criação de uma Interface Homem-Máquina (IHM) para controlar um braço robótico, atendendo a uma demanda específica de reparo e retrofit do modelo Mitsubishi RV-2SDB/RV-2SQB. A solução, desenvolvida em um ambiente de baixo custo e baseada em bibliotecas open source, visa não apenas suprir a necessidade de controle manual e automático do robô, mas também oferecer uma base reutilizável para reparos e aprimoramentos em outros contextos industriais. Um dos destaques é a incorporação de uma simulação 3D em tempo real, permitindo ao operador visualizar e acompanhar os movimentos do braço robótico em um ambiente virtual sincronizado com a execução física.
+Neste trabalho, propõe-se a criação de um software de simulação 3D para braços robóticos, especificamente modelado para o Mitsubishi RV-2SDB/RV-2SQB. A solução, desenvolvida em um ambiente de baixo custo e baseada em bibliotecas open source, visa oferecer uma ferramenta educacional e de treinamento para operadores e estudantes. O destaque principal é a simulação 3D em tempo real, permitindo ao usuário visualizar e acompanhar os movimentos do braço robótico em um ambiente virtual, facilitando o aprendizado e a compreensão da cinemática robótica.
 
-A relevância do projeto reside na:
-\begin{alineas}
-    \item Viabilizar uma alternativa econômica para manutenção de robôs em cenários com recursos limitados.
-    \item Criar um software de controle que integra joystick, interface gráfica e simulação 3D, ampliando a usabilidade e o entendimento das operações
-    \item Possibilitar compartilhamento e aprimoramento contínuo, já que o código segue uma filosofia open source, beneficiando o meio acadêmico e industrial.
-\end{alineas}
+A relevância do projeto reside na possibilidade de oferecer uma ferramenta educacional acessível para o ensino de robótica e cinemática, criando um software de simulação que integra interface gráfica e visualização 3D, ampliando a compreensão das operações robóticas. Além disso, possibilita o compartilhamento e aprimoramento contínuo, já que o código segue uma filosofia open source, beneficiando o meio acadêmico e educacional.
 
-Este documento descreve a fundamentação teórica que embasa o desenvolvimento, a abordagem metodológica adotada, os resultados obtidos e as implicações práticas no setor industrial e na comunidade acadêmica. Espera-se demonstrar que a combinação de controle manual, ajustes automáticos e visualização 3D online pode proporcionar maior confiabilidade, usabilidade e escalabilidade às soluções de automação.
+Este documento descreve a fundamentação teórica que embasa o desenvolvimento, a abordagem metodológica adotada, os resultados obtidos e as implicações práticas na educação e na comunidade acadêmica. Espera-se demonstrar que a simulação 3D pode proporcionar maior compreensão, usabilidade e escalabilidade às ferramentas educacionais de robótica.
 
 \section{Motivação}
 \label{sec:motivacao}
 
-A motivação central deste trabalho surge da necessidade de reparo e aprimoramento de um braço robótico \textit{Mitsubishi RV-2SDB/RV-2SQB}, cujo suporte especializado tornou-se inviável devido a restrições orçamentárias. Assim, a abordagem escolhida foca em soluções de baixo custo e ferramentas open source, unificando controle manual, monitoramento automático e simulação 3D.
+A motivação central deste trabalho surge da necessidade de uma ferramenta educacional para o ensino de robótica, especificamente para o modelo \textit{Mitsubishi RV-2SDB/RV-2SQB}. A abordagem escolhida foca em soluções de baixo custo e ferramentas open source, criando uma simulação 3D que facilite o aprendizado da cinemática robótica.
 
-Em cenários industriais, a inatividade de um robô devido a falhas em módulos de controle gera prejuízos financeiros e produtivos. Uma IHM que facilite ajustes de velocidade, posicionamento e correção de falhas, além de oferecer simulação 3D realista, pode reduzir tempos de parada e retrabalho. A motivação, portanto, combina fatores econômicos, técnicos e operacionais, buscando uma solução modular e flexível.
+Em cenários educacionais, a falta de equipamentos físicos limita o aprendizado prático de robótica. Uma simulação 3D realista que permita visualizar movimentos, testar configurações e compreender a cinemática pode melhorar significativamente o processo de ensino-aprendizagem. A motivação, portanto, combina fatores educacionais, técnicos e pedagógicos, buscando uma solução modular e flexível para o ensino de robótica.
 
 \section{Objetivos}
 \label{sec:objetivos}
 
-Os objetivos geral e específicos deste projeto visam oferecer uma solução completa para controle e monitoramento do braço robótico Mitsubishi RV-2SDB/RV-2SQB em ambiente industrial. A aplicação integra \textit{firmware}, \textit{software} e interface gráfica, com simulação 3D em tempo real para melhorar visualização e diagnóstico.
+Os objetivos geral e específicos deste projeto visam oferecer uma solução completa para simulação e ensino do braço robótico Mitsubishi RV-2SDB/RV-2SQB em ambiente educacional. A aplicação integra \textit{software} e interface gráfica, com simulação 3D em tempo real para melhorar visualização e compreensão da cinemática robótica.
 \subsection{Objetivo Geral}
 \label{sec:objetivo-geral}
 
-Desenvolver uma \textbf{Interface Homem-Máquina} robusta, econômica e \textit{open source} para controle de um braço robótico, permitindo tanto operação manual (por \textit{joystick}) quanto ajustes automáticos, além de oferecer uma simulação 3D em tempo real que reflita os movimentos e estados do robô.
+Desenvolver um software de simulação 3D robusto \textit{open source} para braços robóticos, permitindo visualização interativa e compreensão da cinemática, além de oferecer uma simulação 3D em tempo real que demonstre os movimentos e comportamentos do robô.
 
 \subsection{Objetivos Específicos}
 \label{sec:objetivos-especificos}
 
-\begin{alineas}
-    \item Projetar e implementar o \textit{firmware} de controle, definindo um protocolo de comunicação de 32 bits para \textit{hardware} como \textit{ESP32} e \textit{FPGA}, incluindo recursos de freio, \textit{reverse} e ajuste de velocidade;
-    \item Integrar um dispositivo \textit{joystick} à interface gráfica, de modo a fornecer um controle manual intuitivo para o operador;
-    \item Desenvolver e incorporar uma simulação 3D em tempo real, sincronizada com as ações do braço robótico, possibilitando a identificação de falhas e otimização dos parâmetros de controle;
-    \item Avaliar o desempenho do sistema em cenários de testes, verificando latência, confiabilidade e consumo de recursos do \textit{host} e do \textit{microcontrolador};
-    \item Documentar o projeto em formato \textit{open source}, compartilhando bibliotecas e instruções que facilitem o \textit{retrofit} de outros braços robóticos ou equipamentos industriais legados.
-\end{alineas}
+Os objetivos específicos incluem modelar e implementar a cinemática de um braço robótico, criar um protocolo universal para comunicação com braços robóticos, 
+definindo as transformações matemáticas necessárias para representar e simular fielmente o movimento e funcionamento do braço robôtico Mitsubishi RV-2SDB/RV-2SQB. 
+Além disso, pretende-se integrar controles interativos à interface gráfica, de modo a fornecer uma experiência de usuário intuitiva para manipulação da simulação.
+O desenvolvimento e incorporação de uma simulação 3D em tempo real permitirá visualização precisa dos movimentos do braço robótico e facilitará a compreensão da cinemática. 
+A avaliação do desempenho do sistema em cenários de teste verificará a precisão da simulação, usabilidade da interface e eficiência computacional.
+Por fim, o projeto será documentado em formato \textit{open source}, compartilhando bibliotecas e instruções que facilitem a adaptação para outros modelos de braços robóticos ou aplicações educacionais.

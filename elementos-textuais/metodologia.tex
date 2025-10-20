@@ -1,8 +1,7 @@
-\begin{comment}
 \chapter{Metodologia}
 \label{chap:metodologia}
 
-O desenvolvimento da Interface Homem-Máquina (IHM) para o controle e simulação do braço robótico Mitsubishi RV-2SDB/RV-2SQB seguiu uma abordagem estruturada e iterativa, garantindo a entrega de um sistema funcional e robusto. As etapas da metodologia são detalhadas a seguir.
+O desenvolvimento do software de simulação 3D para o braço robótico Mitsubishi RV-2SDB/RV-2SQB seguiu uma abordagem estruturada e iterativa, garantindo a entrega de um sistema funcional e robusto para fins educacionais. As etapas da metodologia são detalhadas a seguir.
 
 \begin{table}[h!]
 	\Caption{\label{tabela-ibge} Um Exemplo de tabela alinhada que pode ser longa ou curta, conforme padrão IBGE}%
@@ -27,15 +26,15 @@ O desenvolvimento da Interface Homem-Máquina (IHM) para o controle e simulaçã
 \section{Definição dos Requisitos}
 \label{sec:exemplo-de-algoritmos-e-figuras}
 
-Inicialmente, foram identificados os requisitos funcionais e não funcionais do sistema, baseados nas necessidades de controle e simulação do robô:
+Inicialmente, foram identificados os requisitos funcionais e não funcionais do sistema, baseados nas necessidades de simulação e ensino do robô:
 
 \begin{alineascomnumero}
-	\item Controle Manual: Operação via joystick (e.g., controle Xbox) e teclado para ajustar ângulos das juntas.
+	\item Controle Interativo: Operação via teclado e mouse para ajustar ângulos das juntas.
     \item Simulação 3D: Visualização em tempo real dos movimentos do robô.
-    \item Ajustes Automáticos: Configurações de velocidade e posicionamento com limites específicos (e.g., ±240° para J1).
-    \item Interface Gráfica: Exibição de estados e ajustes interativos.
+    \item Parâmetros Realistas: Configurações baseadas nas especificações reais (e.g., ±240° para J1).
+    \item Interface Gráfica: Exibição de parâmetros e controles interativos.
     \item Open Source: Uso de bibliotecas livres.
-    \item Desempenho: Baixa latência e estabilidade.
+    \item Desempenho: Renderização fluida e estabilidade.
 \end{alineascomnumero}
 
 \section{Seleção das Tecnologias}
@@ -73,34 +72,111 @@ O software foi implementado em C++, com módulos separados:
 
 \begin{alineascomnumero}
     \item Renderização: Carregamento e renderização do modelo 3D usando OpenGL e Assimp.
-    \item Input: Gerenciamento de entradas via SDL (teclado, joystick).
-    \item Simulação: Cálculo de transformações cinemáticas com GLM e resolução de colisão com fisicas \textit{rigid body} em tempo real.
+    \item Input: Gerenciamento de entradas via SDL (teclado, mouse).
+    \item Simulação: Cálculo de transformações cinemáticas com GLM e modelagem física para simulação realista.
     \item Interface Gráfica: Exibição e ajuste de parâmetros via ImGui.
 \end{alineascomnumero}
 
-Implementando estes algoritmos para cinematica inversa e detecção e resolução de colisão em tempo real:
+Implementando estes algoritmos para cinemática e simulação física:
 
 \begin{alineascomnumero}
-\item FABRIK(cinemática inversa de alcance para frente e para trás)
-\item GGD(Descida de coordenação ciclica)\item GJK(Gilbert Johnson Keerthi): Cálculo e resolução de colisão com fisicas \textit{rigid body} em tempo real.
-\item EPA(Algoritmo de expanção de politopo):
+\item FABRIK (cinemática inversa de alcance para frente e para trás)
+\item GGD (Descida de coordenação cíclica)
+\item GJK (Gilbert Johnson Keerthi): Cálculo de colisão para simulação física realista.
+\item EPA (Algoritmo de expansão de politopo)
 \item Adição de Minkowski: Função suporte para o algoritmo de GJK.
-\item Sistemas de arbitração
+\item Sistemas de arbitração para simulação
 \end{alineascomnumero}
 
 \begin{algorithm}[h!]
 	\SetSpacedAlgorithm
-	\caption{\label{exemplo-de-algoritmo}Como escrever algoritmos no \LaTeX2e}
-	\Entrada{o proprio texto}
-	\Saida{como escrever algoritmos com \LaTeX2e }
+	\caption{\label{alg:fabrik}Algoritmo FABRIK - Forward and Backward Reaching Inverse Kinematics}
+	\Entrada{posição alvo, posições das juntas, comprimentos dos elos}
+	\Saida{ângulos das juntas para alcançar a posição alvo}
 	\Inicio{
-		inicializa\c{c}\~ao\;
-		\Repita{fim do texto}{
-			leia o atual\;
-			\Se{entendeu}{
-				vá para o próximo\;
-				próximo se torna o atual\;}
-			\Senao{volte ao início da seção\;}
+		\Para{cada iteração}{
+			// Fase Forward (para frente)
+			posição\_atual $\leftarrow$ posição\_base\;
+			\Para{i = 1 até número\_de\_juntas}{
+				distância $\leftarrow$ |posição\_alvo - posição\_atual|\;
+				\Se{distância > comprimento\_elo[i]}{
+					posição\_atual $\leftarrow$ posição\_atual + (comprimento\_elo[i] / distância) * (posição\_alvo - posição\_atual)\;
+				}
+				\Senao{
+					posição\_atual $\leftarrow$ posição\_alvo\;
+				}
+			}
+			// Fase Backward (para trás)
+			posição\_atual $\leftarrow$ posição\_alvo\;
+			\Para{i = número\_de\_juntas até 1}{
+				distância $\leftarrow$ |posição\_anterior - posição\_atual|\;
+				\Se{distância > comprimento\_elo[i]}{
+					posição\_atual $\leftarrow$ posição\_atual + (comprimento\_elo[i] / distância) * (posição\_anterior - posição\_atual)\;
+				}
+				\Senao{
+					posição\_atual $\leftarrow$ posição\_anterior\;
+				}
+			}
+		}
+		calcular\_ângulos\_das\_juntas()\;
+	}	
+\end{algorithm}
+
+\begin{algorithm}[h!]
+	\SetSpacedAlgorithm
+	\caption{\label{alg:ggd}Algoritmo GGD - Gradient Descent com Coordenação Cíclica}
+	\Entrada{função objetivo, parâmetros iniciais, taxa de aprendizado}
+	\Saida{parâmetros otimizados}
+	\Inicio{
+		parâmetros $\leftarrow$ parâmetros\_iniciais\;
+		\Repita{convergência}{
+			gradiente $\leftarrow$ calcular\_gradiente(parâmetros)\;
+			\Para{cada parâmetro i}{
+				parâmetros[i] $\leftarrow$ parâmetros[i] - taxa\_aprendizado * gradiente[i]\;
+			}
+			erro $\leftarrow$ calcular\_erro(parâmetros)\;
+			\Se{erro < threshold}{
+				parar\;
+			}
+		}
+	}	
+\end{algorithm}
+
+\begin{algorithm}[h!]
+	\SetSpacedAlgorithm
+	\caption{\label{alg:gjk}Algoritmo GJK - Gilbert Johnson Keerthi para Detecção de Colisão}
+	\Entrada{objeto A, objeto B}
+	\Saida{colisão detectada (verdadeiro/falso)}
+	\Inicio{
+		simplex $\leftarrow$ $\emptyset$\;
+		direção $\leftarrow$ direção\_inicial\;
+		\Repita{simplex contém origem}{
+			ponto\_suporte $\leftarrow$ suporte(A, B, direção)\;
+			\Se{ponto\_suporte $\cdot$ direção $\leq$ 0}{
+				retornar falso\;
+			}
+			simplex $\leftarrow$ adicionar\_ponto(simplex, ponto\_suporte)\;
+			simplex, direção $\leftarrow$ reduzir\_simplex(simplex)\;
+		}
+		retornar verdadeiro\;
+	}	
+\end{algorithm}
+
+\begin{algorithm}[h!]
+	\SetSpacedAlgorithm
+	\caption{\label{alg:epa}Algoritmo EPA - Expanding Polytope Algorithm}
+	\Entrada{simplex do GJK}
+	\Saida{vetor de separação e distância de penetração}
+	\Inicio{
+		polítopo $\leftarrow$ simplex\;
+		\Repita{polítopo não pode ser expandido}{
+			aresta\_mais\_próxima $\leftarrow$ encontrar\_aresta\_mais\_próxima\_da\_origem(polítopo)\;
+			ponto\_suporte $\leftarrow$ suporte(A, B, normal\_da\_aresta)\;
+			distância $\leftarrow$ |ponto\_suporte $\cdot$ normal\_da\_aresta|\;
+			\Se{|distância - distância\_anterior| < epsilon}{
+				retornar normal\_da\_aresta, distância\;
+			}
+			polítopo $\leftarrow$ adicionar\_ponto(polítopo, ponto\_suporte)\;
 		}
 	}	
 \end{algorithm}
@@ -364,4 +440,3 @@ Havendo    citações    indiretas de    diversos    documentos    de    vários
 
 Deve-se utilizar o sistema autor-data para as  citações no texto e o numérico para notas explicativas\footnote{Veja - se como exemplo desse tipo de abordagem o estudo de Netzer (1976)}. As notas de rodapé podem e devem ser alinhadas, a partir da segunda linha da mesma nota, abaixo da primeira letra da primeira palavra, de forma a destacar o expoente \footnote{Encontramos  esse  tipo  de  perspectiva  na  2ª  parte  do  verbete  referido  na  nota  anterior,  em  grande  parte  do estudo de Rahner (1962).} e sem espaço entre elas e com fonte menor (tamanho 10).
 
-\end{comment}
