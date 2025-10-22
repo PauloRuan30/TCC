@@ -88,98 +88,6 @@ Implementando estes algoritmos para cinemática e simulação física:
 \item Sistemas de arbitração para simulação
 \end{alineascomnumero}
 
-\begin{algorithm}[h!]
-	\SetSpacedAlgorithm
-	\caption{\label{alg:fabrik}Algoritmo FABRIK - Forward and Backward Reaching Inverse Kinematics}
-	\Entrada{posição alvo, posições das juntas, comprimentos dos elos}
-	\Saida{ângulos das juntas para alcançar a posição alvo}
-	\Inicio{
-		\Para{cada iteração}{
-			// Fase Forward (para frente)
-			posição\_atual $\leftarrow$ posição\_base\;
-			\Para{i = 1 até número\_de\_juntas}{
-				distância $\leftarrow$ |posição\_alvo - posição\_atual|\;
-				\Se{distância > comprimento\_elo[i]}{
-					posição\_atual $\leftarrow$ posição\_atual + (comprimento\_elo[i] / distância) * (posição\_alvo - posição\_atual)\;
-				}
-				\Senao{
-					posição\_atual $\leftarrow$ posição\_alvo\;
-				}
-			}
-			// Fase Backward (para trás)
-			posição\_atual $\leftarrow$ posição\_alvo\;
-			\Para{i = número\_de\_juntas até 1}{
-				distância $\leftarrow$ |posição\_anterior - posição\_atual|\;
-				\Se{distância > comprimento\_elo[i]}{
-					posição\_atual $\leftarrow$ posição\_atual + (comprimento\_elo[i] / distância) * (posição\_anterior - posição\_atual)\;
-				}
-				\Senao{
-					posição\_atual $\leftarrow$ posição\_anterior\;
-				}
-			}
-		}
-		calcular\_ângulos\_das\_juntas()\;
-	}	
-\end{algorithm}
-
-\begin{algorithm}[h!]
-	\SetSpacedAlgorithm
-	\caption{\label{alg:ggd}Algoritmo GGD - Gradient Descent com Coordenação Cíclica}
-	\Entrada{função objetivo, parâmetros iniciais, taxa de aprendizado}
-	\Saida{parâmetros otimizados}
-	\Inicio{
-		parâmetros $\leftarrow$ parâmetros\_iniciais\;
-		\Repita{convergência}{
-			gradiente $\leftarrow$ calcular\_gradiente(parâmetros)\;
-			\Para{cada parâmetro i}{
-				parâmetros[i] $\leftarrow$ parâmetros[i] - taxa\_aprendizado * gradiente[i]\;
-			}
-			erro $\leftarrow$ calcular\_erro(parâmetros)\;
-			\Se{erro < threshold}{
-				parar\;
-			}
-		}
-	}	
-\end{algorithm}
-
-\begin{algorithm}[h!]
-	\SetSpacedAlgorithm
-	\caption{\label{alg:gjk}Algoritmo GJK - Gilbert Johnson Keerthi para Detecção de Colisão}
-	\Entrada{objeto A, objeto B}
-	\Saida{colisão detectada (verdadeiro/falso)}
-	\Inicio{
-		simplex $\leftarrow$ $\emptyset$\;
-		direção $\leftarrow$ direção\_inicial\;
-		\Repita{simplex contém origem}{
-			ponto\_suporte $\leftarrow$ suporte(A, B, direção)\;
-			\Se{ponto\_suporte $\cdot$ direção $\leq$ 0}{
-				retornar falso\;
-			}
-			simplex $\leftarrow$ adicionar\_ponto(simplex, ponto\_suporte)\;
-			simplex, direção $\leftarrow$ reduzir\_simplex(simplex)\;
-		}
-		retornar verdadeiro\;
-	}	
-\end{algorithm}
-
-\begin{algorithm}[h!]
-	\SetSpacedAlgorithm
-	\caption{\label{alg:epa}Algoritmo EPA - Expanding Polytope Algorithm}
-	\Entrada{simplex do GJK}
-	\Saida{vetor de separação e distância de penetração}
-	\Inicio{
-		polítopo $\leftarrow$ simplex\;
-		\Repita{polítopo não pode ser expandido}{
-			aresta\_mais\_próxima $\leftarrow$ encontrar\_aresta\_mais\_próxima\_da\_origem(polítopo)\;
-			ponto\_suporte $\leftarrow$ suporte(A, B, normal\_da\_aresta)\;
-			distância $\leftarrow$ |ponto\_suporte $\cdot$ normal\_da\_aresta|\;
-			\Se{|distância - distância\_anterior| < epsilon}{
-				retornar normal\_da\_aresta, distância\;
-			}
-			polítopo $\leftarrow$ adicionar\_ponto(polítopo, ponto\_suporte)\;
-		}
-	}	
-\end{algorithm}
 
 %\begin{algorithm}[H]
 %	\Entrada{o proprio texto}
@@ -206,15 +114,15 @@ Implementando estes algoritmos para cinemática e simulação física:
 
 Exemplo de alíneas com números:
 
-\begin{alineascomnumero}
-	\item Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
-	\item Praesent vitae nulla varius, pulvinar quam at, dapibus nisi. Aenean in commodo tellus. Mauris molestie est sed justo malesuada, quis feugiat tellus venenatis.
-	\item Praesent quis erat eleifend, lacinia turpis in, tristique tellus. Nunc dictum sed tortor nec viverra.
-	\item Mauris facilisis odio eu ornare tempor. Nunc dictum sed tortor nec viverra.
-	\item Curabitur convallis odio at eros consequat pretium.
-\end{alineascomnumero}
+%\begin{alineascomnumero}
+%	\item Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
+%	\item Praesent vitae nulla varius, pulvinar quam at, dapibus nisi. Aenean in commodo tellus. Mauris molestie est sed justo malesuada, quis feugiat tellus venenatis.
+%	\item Praesent quis erat eleifend, lacinia turpis in, tristique tellus. Nunc dictum sed tortor nec viverra.
+%	\item Mauris facilisis odio eu ornare tempor. Nunc dictum sed tortor nec viverra.
+%	\item Curabitur convallis odio at eros consequat pretium.
+%\end{alineascomnumero}
 
-\lipsum[12]
+%\lipsum[12]
 
 \begin{table}[h!]	
 	\centering
@@ -237,22 +145,10 @@ Exemplo de alíneas com números:
 }
 \end{table}
 
-\lipsum[2] Referenciando a \autoref{tab:internal} \lipsum[2]
+%\lipsum[2] Referenciando a \autoref{tab:internal} \lipsum[2]
 
-\index{figuras}Figuras podem ser criadas diretamente em LaTeX,
-como o exemplo da \ref{fig-grafico-1}.
 
-\begin{figure}[h!]
-	\centering
-	\Caption{\label{fig-grafico-1}Produção anual das dissertações de mestrado e teses de doutorado entre os anos de 1990 e 2008}		
-	\IBGEtab{}{
-		\fbox{\includegraphics[scale=0.5]{figuras/figura-3}}
-	}{
-	\Fonte{os autores}
-}
-\end{figure}
 
-Ou então figuras podem ser incorporadas de arquivos externos, como é o caso da \autoref{fig-grafico-1}. Se a figura que ser incluída se tratar de um diagrama, um gráfico ou uma ilustração que você mesmo produza, priorize o uso de imagens vetoriais no formato PDF. Com isso, o tamanho do arquivo final do trabalho será menor, e as imagens terão uma apresentação melhor, principalmente quando impressas, uma vez que imagens vetorias são perfeitamente escaláveis para qualquer dimensão. Nesse caso, se for utilizar o Microsoft Excel para produzir gráficos, ou o Microsoft Word para produzir ilustrações, exporte-os como PDF e os incorpore ao documento conforme o exemplo abaixo. No entanto, para manter a coerência no uso de software livre (já que você está usando LaTeX e abnTeX),  teste a ferramenta InkScape\index{InkScape}. ao CorelDraw\index{CorelDraw} ou ao Adobe Illustrator\index{Adobe! Illustrator}.  De todo modo, caso não seja possível  utilizar arquivos de imagens como PDF, utilize qualquer outro formato, como JPEG, GIF, BMP, etc.  Nesse caso, você pode tentar aprimorar as imagens incorporadas com o software livre \index{Gimp}Gimp. Ele é uma alternativa livre ao Adobe Photoshop\index{Adobe! Photoshop}.
 
 \section{Usando Fórmulas Matemáticas}
 
@@ -310,29 +206,120 @@ Ou então figuras podem ser incorporadas de arquivos externos, como é o caso da
 	
 \lipsum[7]
 
-\section{Usando Algoritmos}
 
-\lipsum[8]
+
+\subsection{Algoritmos de Simulação Robótica}
+
+Os seguintes algoritmos foram implementados para o software de simulação 3D:
+
+\subsubsection{Algoritmo FABRIK}
+
+O algoritmo FABRIK (Forward and Backward Reaching Inverse Kinematics) é utilizado para resolver o problema de cinemática inversa, determinando os ângulos das juntas necessários para posicionar o efetuador final do robô em uma posição alvo específica. Este algoritmo opera em duas fases: uma fase forward que estende a cadeia cinemática em direção ao alvo, e uma fase backward que ajusta as posições das juntas para manter os comprimentos dos elos constantes, sendo particularmente eficaz por sua simplicidade computacional e capacidade de lidar com múltiplos graus de liberdade em tempo real.
 
 \begin{algorithm}[h!]
 	\SetSpacedAlgorithm
-	\caption{\label{alg:algoritmo_de_colonica_de_formigas}Algoritmo de Otimização por Colônia de Formiga}
-	\Entrada{Entrada do Algoritmo}
-	\Saida{Saida do Algoritmo}
+	\caption{\label{alg:fabrik}Algoritmo FABRIK - Forward and Backward Reaching Inverse Kinematics}
+	\Entrada{posição alvo, posições das juntas, comprimentos dos elos}
+	\Saida{ângulos das juntas para alcançar a posição alvo}
 	\Inicio{
-		Atribua os valores dos parâmetros\;
-		Inicialize as trilhas de feromônios\;
-		\Enqto{não atingir o critério de parada}{
-			\Para{cada formiga}{
-				Construa as Soluções\;
+		\Para{cada iteração}{
+			// Fase Forward (para frente)
+			posição\_atual $\leftarrow$ posição\_base\;
+			\Para{i = 1 até número\_de\_juntas}{
+				distância $\leftarrow$ |posição\_alvo - posição\_atual|\;
+				\Se{distância > comprimento\_elo[i]}{
+					posição\_atual $\leftarrow$ posição\_atual + (comprimento\_elo[i] / distância) * (posição\_alvo - posição\_atual)\;
+				}
+				\Senao{
+					posição\_atual $\leftarrow$ posição\_alvo\;
+				}
 			}
-			Aplique Busca Local (Opcional)\;
-			Atualize o Feromônio\;
-		}	
-	}		
+			// Fase Backward (para trás)
+			posição\_atual $\leftarrow$ posição\_alvo\;
+			\Para{i = número\_de\_juntas até 1}{
+				distância $\leftarrow$ |posição\_anterior - posição\_atual|\;
+				\Se{distância > comprimento\_elo[i]}{
+					posição\_atual $\leftarrow$ posição\_atual + (comprimento\_elo[i] / distância) * (posição\_anterior - posição\_atual)\;
+				}
+				\Senao{
+					posição\_atual $\leftarrow$ posição\_anterior\;
+				}
+			}
+		}
+		calcular\_ângulos\_das\_juntas()\;
+	}	
 \end{algorithm}
 
-\lipsum[9]
+\subsubsection{Algoritmo GGD}
+
+O algoritmo GGD (Gradient Descent com Coordenação Cíclica) é empregado para otimização de parâmetros e ajuste fino dos movimentos, permitindo ajustar automaticamente os parâmetros do sistema como velocidades e acelerações para melhorar a suavidade e precisão dos movimentos simulados, sendo especialmente útil para encontrar configurações ótimas que minimizem o consumo de energia ou maximizem a eficiência dos movimentos do robô.
+
+\begin{algorithm}[h!]
+	\SetSpacedAlgorithm
+	\caption{\label{alg:ggd}Algoritmo GGD - Gradient Descent com Coordenação Cíclica}
+	\Entrada{função objetivo, parâmetros iniciais, taxa de aprendizado}
+	\Saida{parâmetros otimizados}
+	\Inicio{
+		parâmetros $\leftarrow$ parâmetros\_iniciais\;
+		\Repita{convergência}{
+			gradiente $\leftarrow$ calcular\_gradiente(parâmetros)\;
+			\Para{cada parâmetro i}{
+				parâmetros[i] $\leftarrow$ parâmetros[i] - taxa\_aprendizado * gradiente[i]\;
+			}
+			erro $\leftarrow$ calcular\_erro(parâmetros)\;
+			\Se{erro < threshold}{
+				parar\;
+			}
+		}
+	}	
+\end{algorithm}
+
+\subsubsection{Algoritmo GJK}
+
+O algoritmo GJK (Gilbert Johnson Keerthi) é responsável pela detecção rápida de colisões, garantindo que o robô não atravesse objetos ou se auto-intersecte durante os movimentos, utilizando conceitos de geometria computacional e análise de simplex para detectar se dois objetos estão em colisão de forma altamente eficiente e em tempo real, permitindo simulações fluidas mesmo com múltiplos objetos no ambiente.
+
+\begin{algorithm}[h!]
+	\SetSpacedAlgorithm
+	\caption{\label{alg:gjk}Algoritmo GJK - Gilbert Johnson Keerthi para Detecção de Colisão}
+	\Entrada{objeto A, objeto B}
+	\Saida{colisão detectada (verdadeiro/falso)}
+	\Inicio{
+		simplex $\leftarrow$ $\emptyset$\;
+		direção $\leftarrow$ direção\_inicial\;
+		\Repita{simplex contém origem}{
+			ponto\_suporte $\leftarrow$ suporte(A, B, direção)\;
+			\Se{ponto\_suporte $\cdot$ direção $\leq$ 0}{
+				retornar falso\;
+			}
+			simplex $\leftarrow$ adicionar\_ponto(simplex, ponto\_suporte)\;
+			simplex, direção $\leftarrow$ reduzir\_simplex(simplex)\;
+		}
+		retornar verdadeiro\;
+	}	
+\end{algorithm}
+
+\subsubsection{Algoritmo EPA}
+
+O algoritmo EPA (Expanding Polytope Algorithm) complementa o GJK calculando informações detalhadas sobre colisões, incluindo a distância de penetração e o vetor de separação, sendo essencial para implementar respostas realistas a colisões como separação automática de objetos ou alertas visuais para o usuário, trabalhando em conjunto com o GJK para fornecer uma solução completa ao problema de detecção e resolução de colisões.
+
+\begin{algorithm}[h!]
+	\SetSpacedAlgorithm
+	\caption{\label{alg:epa}Algoritmo EPA - Expanding Polytope Algorithm}
+	\Entrada{simplex do GJK}
+	\Saida{vetor de separação e distância de penetração}
+	\Inicio{
+		polítopo $\leftarrow$ simplex\;
+		\Repita{polítopo não pode ser expandido}{
+			aresta\_mais\_próxima $\leftarrow$ encontrar\_aresta\_mais\_próxima\_da\_origem(polítopo)\;
+			ponto\_suporte $\leftarrow$ suporte(A, B, normal\_da\_aresta)\;
+			distância $\leftarrow$ |ponto\_suporte $\cdot$ normal\_da\_aresta|\;
+			\Se{|distância - distância\_anterior| < epsilon}{
+				retornar normal\_da\_aresta, distância\;
+			}
+			polítopo $\leftarrow$ adicionar\_ponto(polítopo, ponto\_suporte)\;
+		}
+	}	
+\end{algorithm}
 
 \section{Usando Código-fonte}
 
