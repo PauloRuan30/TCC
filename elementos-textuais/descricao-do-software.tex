@@ -1,0 +1,26 @@
+\chapter{Descrição do Sistema de Simulação}
+
+\label{chap: descricao-do-sistema}
+
+Este capítulo descreve, em detalhe, o sistema de software desenvolvido e/ou fornecido juntamente com este trabalho. A análise foi realizada a partir do repositório submetido, que contém o código-fonte do simulador (nome do repositório: \texttt{m-simulation-main}).
+
+\section{Visão geral}
+O sistema é uma aplicação desenvolvida primariamente em \textbf{C++} com componentes organizados em módulos responsáveis por lógica de simulação, renderização, interface e utilitários. O objetivo do software é permitir a simulação tridimensional de manipuladores robóticos e prover uma interface para experimentação educacional e análise de cinemática.
+
+\section{Principais componentes}
+A partir da inspeção do código, foram identificados os seguintes subsistemas (nomes e rotas de arquivos podem variar conforme a distribuição do repositório):
+
+\begin{itemize}
+  \item \textbf{Módulo de simulação/engine: } responsável por modelar a cinemática e a dinâmica (arquivos em \texttt{src/}).
+  \item \textbf{Interface gráfica (GUI): } implementação para visualização 3D e interação (arquivos identificados em \texttt{src/} e \texttt{include/}).
+  \item \textbf{Módulo de integração/IO: } leitura de arquivos de configuração, parâmetros de robô, exportação de logs/trajectórias.
+  \item \textbf{Testes e notebooks: } exemplos de experimentos e scripts de validação, potenciais notebooks para demonstração.
+  \item \textbf{Documentação e scripts de instalação: } \texttt{README. md} e instruções no repositório para build.
+
+\end{itemize}
+
+\section{Fluxo de execução}
+O fluxo típico de execução identificado está descrito no README e segue: preparar o ambiente, compilar, executar o binário principal e abrir a interface gráfica.
+
+\section{Dependências e requisitos}
+As dependências e instruções de build estão indicadas no README (uso de \texttt{xmake} e instruções para CMake). Recomenda-se criar um ambiente dockerizado para garantir reprodutibilidade.

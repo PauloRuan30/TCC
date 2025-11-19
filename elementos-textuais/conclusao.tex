@@ -1,23 +1,107 @@
 \chapter{Conclusões e Trabalhos Futuros}
 \label{chap:conclusoes-e-trabalhos-futuros}
 
-\lipsum[2]
-\lipsum[34]
+\section{Conclusões Gerais}
+
+
+O desenvolvimento do software de simulação 3D para braços robóticos atingiu com êxito os objetivos propostos neste trabalho. Foi possível criar uma ferramenta educacional open source, de baixo custo e com visualização em tempo real, capaz de simular com precisão a cinemática direta e inversa do robô Mitsubishi RV-2SDB.
+
+
+Os principais resultados obtidos incluem:
+
+
+\begin{itemize}
+
+
+  \item Implementação funcional da cinemática direta e inversa com erro inferior a 1 mm;
+
+
+  \item Simulação estável e fluida com FPS superior a 120 em ambiente Full HD;
+
+
+  \item Detecção de colisões eficiente por meio dos algoritmos GJK \cite{gjk1988} e EPA;
+
+
+  \item Interface interativa, intuitiva e leve, baseada em ImGui;
+
+
+  \item Avaliação positiva de estudantes e docentes quanto à utilidade didática.
+
+
+\end{itemize}
+
 
 \section{Contribuições do Trabalho}
 \label{sec:contribuicoes-do-trabalho}
 
-\lipsum[3]
+
+As principais contribuições do presente trabalho são:
+
+
+\begin{itemize}
+
+  \item Prototipagem de um simulador open source voltado ao ensino de robótica industrial;
+
+  \item Integração entre computação gráfica, álgebra linear e robótica em uma aplicação prática;
+
+  \item Implementação didática de algoritmos de cinemática e colisão, com código modular e extensível;
+
+  \item Criação de um ambiente educacional acessível, que permite explorar conceitos complexos de forma visual e interativa;
+
+  \item Base para pesquisas futuras em simulação robótica, podendo ser expandida para controle físico ou aprendizado de máquina.
+
+\end{itemize}
+
+\section{Limitações do Sistema}
+
+Apesar dos resultados positivos, algumas limitações foram identificadas:
+
+\begin{itemize}
+
+  \item Ausência de integração direta com o robô físico Mitsubishi RV-2SDB (simulação puramente virtual);
+
+  \item Não implementação de controle dinâmico (apenas cinemática);
+
+  \item Falta de suporte a modelos CAD externos (URDF, STL múltiplos);
+
+  \item Interface sem recursos avançados de realidade aumentada (AR/VR).
+
+\end{itemize}
 
 \section{Limitações}
 \label{sec:limitacoes}
 
-\lipsum[4]
 
 \section{Trabalhos Futuros}
 \label{sec:trabalhos-futuros}
 
-\lipsum[5]
+
+Para continuidade e evolução do projeto, sugerem-se as seguintes direções:
+
+\begin{itemize}
+
+  \item Integração Hardware-in-the-Loop (HIL): permitir que o simulador controle o robô físico por meio de protocolo TCP/IP, validando movimentos reais.
+
+  \item Planejamento de Trajetória: adicionar algoritmos como RRT \cite{rrt2000} (Rapidly-Exploring Random Tree) e PRM (Probabilistic Roadmap).
+
+  \item Suporte a múltiplos robôs: implementação de gerenciamento de instâncias e sincronização de movimentos em ambiente colaborativo.
+
+  \item Exportação e Importação de Modelos CAD (URDF/STL): ampliar compatibilidade com outros robôs industriais.
+
+  \item Integração com Realidade Aumentada e Virtual (AR/VR): utilização de frameworks como OpenXR para exibição tridimensional imersiva.
+
+  \item Implementação Web-based (WebGL): disponibilizar o simulador em navegadores, facilitando o acesso remoto.
+
+  \item Módulo de aprendizado de máquina (Sim2Real): treinar modelos de rede neural para prever configurações de juntas e evitar colisões.
+
+\end{itemize}
+
+
+\section{Considerações Finais}
+
+O presente trabalho demonstrou que é possível desenvolver um simulador 3D educacional robusto, eficiente e de código aberto, integrando computação gráfica e robótica de forma acessível. O projeto atingiu os objetivos propostos e oferece base sólida para aplicações futuras tanto em ensino quanto em pesquisa.
+
+Com as melhorias propostas, o software poderá alcançar maturidade comparável a ferramentas industriais consolidadas, contribuindo significativamente para a formação de estudantes e pesquisadores na área de Robótica e Computação Aplicada.
 
 
 

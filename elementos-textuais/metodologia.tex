@@ -1,27 +1,7 @@
 \chapter{Metodologia}
 \label{chap:metodologia}
 
-O desenvolvimento do software de simulação 3D para o braço robótico Mitsubishi RV-2SDB/RV-2SQB seguiu uma abordagem estruturada e iterativa, garantindo a entrega de um sistema funcional e robusto para fins educacionais. As etapas da metodologia são detalhadas a seguir.
-
-\begin{table}[h!]
-	\Caption{\label{tabela-ibge} Um Exemplo de tabela alinhada que pode ser longa ou curta, conforme padrão IBGE}%
-	\IBGEtab{}{%
-		\begin{tabular}{ccc}
-			\toprule
-			Nome & Nascimento & Documento \\
-			\midrule \midrule
-			Maria da Silva & 11/11/1111 & 111.111.111-11 \\
-			Maria da Silva & 11/11/1111 & 111.111.111-11 \\
-			Maria da Silva & 11/11/1111 & 111.111.111-11 \\
-			\bottomrule
-		\end{tabular}%
-	}{%
-	\Fonte{Produzido pelos autores}%
-	\Nota{Esta é uma nota, que diz que os dados são baseados na
-		regressão linear.}%
-	\Nota[Anotações]{Uma anotação adicional, seguida de várias outras.}%
-}
-\end{table}
+O desenvolvimento do software de simulação 3D para o braço robótico Mitsubishi RV-2SDB/RV-2SQB seguiu uma abordagem estruturada e iterativa, com ciclos de implementação, teste e validação. O foco principal foi garantir um sistema funcional, modular e reutilizável para fins educacionais e de pesquisa. As etapas da metodologia são descritas nas subseções seguintes.
 
 \section{Definição dos Requisitos}
 \label{sec:exemplo-de-algoritmos-e-figuras}
@@ -29,7 +9,7 @@ O desenvolvimento do software de simulação 3D para o braço robótico Mitsubis
 Inicialmente, foram identificados os requisitos funcionais e não funcionais do sistema, baseados nas necessidades de simulação e ensino do robô:
 
 \begin{alineascomnumero}
-	\item Controle Interativo: Operação via teclado e mouse para ajustar ângulos das juntas.
+    \item Controle Interativo: Operação via teclado e mouse para ajustar ângulos das juntas.
     \item Simulação 3D: Visualização em tempo real dos movimentos do robô.
     \item Parâmetros Realistas: Configurações baseadas nas especificações reais (e.g., ±240° para J1).
     \item Interface Gráfica: Exibição de parâmetros e controles interativos.
@@ -38,9 +18,7 @@ Inicialmente, foram identificados os requisitos funcionais e não funcionais do 
 \end{alineascomnumero}
 
 \section{Seleção das Tecnologias}
-\label{sec:exemplo-de-algoritmos-e-figuras}
-
-Foram selecionadas tecnologias open source adequadas aos requisitos:
+Inicialmente, foram identificados os requisitos funcionais e não funcionais do sistema, baseados nas necessidades de simulação, ensino e uso prático do robô. Os requisitos principais foram:
 
 \begin{alineascomnumero}
 	\item OpenGL e SDL: Renderização 3D e gerenciamento de janelas.
@@ -55,6 +33,13 @@ Foram selecionadas tecnologias open source adequadas aos requisitos:
 Desenvolveu-se um modelo cinemático com 6 juntas, utilizando dados do manual do robô (e.g., ±240° para J1, velocidade máxima de 4.490 mm/s).
 Comprimentos aproximados dos elos foram definidos (0.2m, 0.3m, 0.25m, 0.15m, 0.1m, 0.05m), a serem refinados com dados reais. 
 A cinemática inversa foi implementada para calcular posições com base nos ângulos das juntas.
+
+\begin{itemize}
+    \item representação de cada junta (tipo, limite angular, velocidade máxima);
+    \item definição da cadeia cinemática por parâmetros Denavit--Hartenberg (D--H);
+    \item representação geométrica das peças para detecção de colisão (caixas delimitadoras e malhas simplificadas);
+    \item exportação/esquema para importar modelos URDF/GLTF quando disponível.
+\end{itemize}
 
  \begin{figure}[h!]
     \centering
@@ -78,17 +63,6 @@ O software foi implementado em C++, com módulos separados:
 \end{alineascomnumero}
 
 Implementando estes algoritmos para cinemática e simulação física:
-
-\begin{alineascomnumero}
-\item FABRIK (cinemática inversa de alcance para frente e para trás)
-\item GGD (Descida de coordenação cíclica)
-\item GJK (Gilbert Johnson Keerthi): Cálculo de colisão para simulação física realista.
-\item TSE (Teorema de separação de eixos): Cálculo de colisão para simulação física realista.
-\item EPA (Algoritmo de expansão de politopo)
-\item Adição de Minkowski: Função suporte para o algoritmo de GJK.
-\item Sistemas de arbitração para simulação
-\end{alineascomnumero}
-
 
 %\begin{algorithm}[H]
 %	\Entrada{o proprio texto}
@@ -146,68 +120,7 @@ Exemplo de alíneas com números:
 }
 \end{table}
 
-%\lipsum[2] Referenciando a \autoref{tab:internal} \lipsum[2]
-
-
-
-
 \section{Algoritmos e embasamento matemático}
-
-\lipsum[2]
-
-	\begin{equation}
-		\begin{aligned}
-			x = a_0 + \cfrac{1}{a_1
-				+ \cfrac{1}{a_2
-					+ \cfrac{1}{a_3 + \cfrac{1}{a_4} } } }
-		\end{aligned}
-	\end{equation}
-
-\lipsum[3]
-
-	\begin{equation}
-		\begin{aligned}
-			k_{n+1} = n^2 + k_n^2 - k_{n-1}
-		\end{aligned}
-	\end{equation}
-
-\lipsum[4]
-
-	\begin{equation}
-		\begin{aligned}
-			\cos (2\theta) = \cos^2 \theta - \sin^2 \theta
-		\end{aligned}
-	\end{equation}
-	
-\lipsum[5]
-
-	\begin{equation}
-		\begin{aligned}
-			A_{m,n} =
-			\begin{pmatrix}
-			a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
-			a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
-			\vdots  & \vdots  & \ddots & \vdots  \\
-			a_{m,1} & a_{m,2} & \cdots & a_{m,n}
-			\end{pmatrix}
-		\end{aligned}
-	\end{equation}
-
-\lipsum[6]
-
-	\begin{equation}
-		\begin{aligned}
-			f(n) = \left\{ 
-			\begin{array}{l l}
-			n/2 & \quad \text{if $n$ is even}\\
-			-(n+1)/2 & \quad \text{if $n$ is odd}
-			\end{array} \right.
-		\end{aligned}
-	\end{equation}
-	
-\lipsum[7]
-
-
 
 \subsection{Algoritmos de Simulação Robótica}
 
@@ -321,6 +234,19 @@ O algoritmo EPA (Expanding Polytope Algorithm) complementa o GJK calculando info
 		}
 	}	
 \end{algorithm}
+
+
+\subsection{Embasamento Matematico dos Algoritmos de Simulação Robótica}
+
+\begin{alineascomnumero}
+\item FABRIK (cinemática inversa de alcance para frente e para trás)
+\item GGD (Descida de coordenação cíclica)
+\item GJK (Gilbert Johnson Keerthi): Cálculo de colisão para simulação física realista.
+\item TSE (Teorema de separação de eixos): Cálculo de colisão para simulação física realista.
+\item EPA (Algoritmo de expansão de politopo)
+\item Adição de Minkowski: Função suporte para o algoritmo de GJK.
+\item Sistemas de arbitração para simulação
+\end{alineascomnumero}
 
 \section{Usando Código-fonte}
 
