@@ -1,40 +1,58 @@
 \chapter{Trabalhos Relacionados}
 \label{cap:trabalhos-relacionados}
 
-A simulação 3D de robôs industriais, como o Mitsubishi RV-2SDB/RV-2SQB, tem sido amplamente explorada em projetos educacionais e acadêmicos, com ênfase em soluções open source e ferramentas educacionais. Abaixo, são apresentados trabalhos e ferramentas que compartilham objetivos semelhantes aos deste projeto, destacando sua relevância para o desenvolvimento do software de simulação proposto.
+A simulação tridimensional de manipuladores robóticos industriais, como a família Mitsubishi RV, é um campo consolidado na literatura, com diversas soluções que variam desde ferramentas proprietárias de alto custo até frameworks de código aberto voltados para a pesquisa. A análise dessas ferramentas é essencial para compreender as lacunas existentes no ensino de robótica e justificar o desenvolvimento de uma solução leve e dedicada.
+
+Neste capítulo, são discutidas três das principais plataformas utilizadas atualmente: RoboDK, Webots e ROS-Industrial. Cada uma apresenta características distintas de arquitetura, usabilidade e acessibilidade, servindo como base comparativa para o software proposto neste trabalho.
 
 \section{RoboDK}
 \label{sec:trabalho-relacionado-a}
 
-O RoboDK é uma plataforma de simulação e programação offline para braços robóticos, amplamente utilizada na indústria e educação. Ele suporta uma vasta biblioteca de modelos de robôs, incluindo alguns da Mitsubishi, e permite simular aplicações como usinagem, soldagem e pick-and-place. Sua interface intuitiva não exige habilidades avançadas de programação, facilitando a criação de simulações e programas robóticos. Este projeto se assemelha ao RoboDK por buscar uma simulação 3D acessível, embora com foco educacional e simulação de um robô específico
+O RoboDK é uma das plataformas de simulação e programação \textit{offline} (OLP) mais robustas do mercado industrial. Ele oferece uma vasta biblioteca com mais de 500 modelos de robôs industriais, incluindo a série Mitsubishi RV-2SDB, permitindo a simulação de tarefas complexas como usinagem, soldagem e operações de \textit{pick-and-place} \cite{robodk2020}.
 
-	\begin{figure}[h!]
-		\centering
-		\Caption{\label{fig:exemplo-1} Interface do Robodk simulando um pick-and-place utilizando um modelo de robô generérico}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=9cm]{figuras/Robodk}}
-		}{
-			\Fonte{Elaborado pelo autor}
-		}	
-	\end{figure}
-	
+A principal vantagem do RoboDK reside em sua capacidade de resolver problemas de singularidade e colisão de forma automática, além de gerar código nativo para o controlador do robô (pós-processamento). Sua interface gráfica é projetada para ser intuitiva, abstraindo a complexidade matemática da cinemática inversa para o usuário final.
+
+Contudo, no contexto educacional brasileiro, o RoboDK apresenta barreiras significativas. Sendo um software comercial, o custo de licenciamento pode ser proibitivo para instituições de ensino públicas ou estudantes individuais. Embora exista uma versão de teste, suas funcionalidades são limitadas para uso contínuo em sala de aula. O projeto proposto neste trabalho busca oferecer uma alternativa que, embora menos generalista, seja totalmente gratuita e de código aberto, focada especificamente na compreensão dos algoritmos que o RoboDK "esconde" do usuário.
+
+\begin{figure}[h!]
+    \centering
+    \Caption{\label{fig:robodk} Interface do RoboDK simulando uma tarefa de pick-and-place com modelo genérico.}
+    \UNIFORfig{}{
+        % Certifique-se de que a imagem Robodk.png ou .jpg existe na pasta figuras
+        \fbox{\includegraphics[width=14cm]{figuras/Robodk}}
+    }{
+        \Fonte{Elaborado pelo autor com base no software RoboDK.}
+    }
+\end{figure}
+
 \section{Webots}
 \label{sec:trabalho-relacionado-b}
 
-O Webots é um software open source que oferece um ambiente completo para modelagem, programação e simulação de robôs, incluindo braços industriais. Desenvolvido pela Cyberbotics, é utilizado em educação, pesquisa e indústria, suportando a importação de modelos CAD. A abordagem open source do Webots alinha-se com os objetivos deste trabalho, que também prioriza bibliotecas livres para garantir escalabilidade e acessibilidade.
+O Webots é um ambiente de simulação de robôs móveis e manipuladores que se destaca pela fidelidade de seu motor de física, baseado na \textit{Open Dynamics Engine} (ODE). Desenvolvido pela Cyberbotics, tornou-se totalmente \textit{open source} em 2018, o que impulsionou sua adoção na academia \cite{webots2019}.
+
+Diferente de simuladores puramente cinemáticos, o Webots simula forças, atrito e sensores (LIDAR, câmeras, sensores de toque), sendo ideal para testar a interação do robô com o ambiente físico. Ele suporta a importação de modelos CAD e permite a programação em diversas linguagens, como C++, Python e MATLAB.
+
+Apesar de sua potência, o Webots é uma ferramenta "pesada" em termos de recursos computacionais e possui uma curva de aprendizado íngreme para iniciantes que desejam apenas estudar a cinemática de um braço específico. A configuração de um ambiente de simulação no Webots exige o domínio de nós e árvores de cena complexas. O software desenvolvido neste TCC, em contrapartida, utiliza uma abordagem direta com OpenGL e ImGui, resultando em uma aplicação mais leve e focada na visualização imediata das cadeias cinemáticas D-H (Denavit-Hartenberg).
 
 \section{ROS-Industrial}
 \label{sec:trabalho-relacionado-c}
 
-O ROS-Industrial é uma extensão do Robot Operating System (ROS), um projeto open source que adapta o ROS para aplicações industriais e educacionais. Liderado por um consórcio que inclui a Fraunhofer IPA, ele facilita a integração de robôs legados com tecnologias modernas, sendo particularmente relevante para educação. Este trabalho se inspira no ROS-Industrial ao buscar soluções econômicas para simular o Mitsubishi RV-2SDB/RV-2SQB, com ênfase na simulação 3D e interface educacional.
+O ROS (\textit{Robot Operating System}) é o padrão de fato para pesquisa em robótica mundial. O ROS-Industrial é uma extensão desse ecossistema, liderada por um consórcio internacional, que visa adaptar a flexibilidade do ROS para o chão de fábrica, integrando hardware legado com algoritmos modernos de planejamento de movimento, como o \textit{MoveIt!} \cite{ros2018}.
 
-	\begin{figure}[h!]
-		\centering
-		\Caption{\label{fig:exemplo-2} Maecenas luctus augue odio, sed tincidunt nunc posuere nec}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=8cm]{figuras/figura-2}}
-		}{
-			\Fonte{Elaborado pelo autor}			
-		}	
-	\end{figure}
+O ROS-Industrial permite que manipuladores antigos, como o Mitsubishi RV-2SDB, recebam comandos de trajetórias complexas calculadas em tempo real. Sua arquitetura baseada em nós e tópicos permite uma modularidade sem precedentes.
 
+Entretanto, a utilização do ROS em disciplinas introdutórias de graduação enfrenta desafios. A instalação e configuração do ambiente (geralmente em Linux/Ubuntu) são complexas, e o entendimento da arquitetura de publicação/assinatura pode desviar o foco do aprendizado da mecânica do robô. Este trabalho inspira-se na filosofia \textit{open source} do ROS, mas busca entregar um executável único e autocontido, removendo a barreira de entrada de configuração de ambiente para o estudante.
+
+% ATENÇÃO: Removi a figura com texto em Latim "Maecenas".
+% Se você tiver uma imagem do ROS ou do Webots, descomente as linhas abaixo e adicione a imagem.
+% Caso contrário, deixe sem figura nesta seção para não colocar "lixo" no TCC.
+
+% \begin{figure}[h!]
+%    \centering
+%    \Caption{\label{fig:ros-industrial} Exemplo de planejamento de trajetória no ambiente ROS/MoveIt.}
+%    \UNIFORfig{}{
+%        \fbox{\includegraphics[width=14cm]{figuras/NOME_DA_SUA_IMAGEM_ROS}}
+%    }{
+%        \Fonte{Elaborado pelo autor.}
+%    }
+% \end{figure}

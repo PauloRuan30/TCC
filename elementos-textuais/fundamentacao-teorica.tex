@@ -1,46 +1,41 @@
 \chapter{Fundamentação Teórica}
 \label{cap:fundamentacao-teorica}
 
-A simulação computacional de sistemas robóticos é cada vez mais relevante no contexto educacional e de pesquisa. Avanços em computação gráfica e algoritmos de cinemática permitem criar ambientes virtuais realistas para o estudo de robôs, como o Mitsubishi RV-2SDB/RV-2SQB, sem a necessidade de equipamentos físicos caros, facilitando o aprendizado e reduzindo custos. Este capítulo apresenta os conceitos que sustentam o desenvolvimento do software de simulação proposto, com ênfase nas tecnologias de visualização 3D e modelagem cinemática.
+A construção de um simulador robótico exige a interseção de conhecimentos de diversas áreas, notadamente a Robótica, a Álgebra Linear e a Computação Gráfica. Este capítulo estabelece as bases teóricas necessárias para a compreensão dos algoritmos implementados, discutindo desde a modelagem matemática do movimento até as técnicas de renderização tridimensional.
 
-\section{Conceitos de Robótica Industrial}
-\label{sec:fundamentacao-teorica-a}
+\section{Modelagem Cinemática de Manipuladores}
+\label{sec:cinematica}
 
-Braços robóticos industriais, como o Mitsubishi RV-2SDB/RV-2SQB, operam com base em cinemática direta e inversa para calcular posições e velocidades das juntas em tarefas precisas. A cinemática direta determina a posição e orientação do efetuador final a partir dos ângulos das juntas, enquanto a cinemática inversa faz o oposto, encontrando os ângulos das juntas para uma dada posição do efetuador. O robô Mitsubishi RV-2SDB/RV-2SQB, com 6 eixos, possui especificações como alcance de ±240° para a junta J1, velocidade máxima de 4.490 mm/s, repetibilidade de ±0.02 mm, e capacidade de carga de 2 kg, conforme o manual técnico. Esses parâmetros são essenciais para a modelagem cinemática no software de simulação.
+A cinemática é o ramo da mecânica que descreve o movimento dos corpos sem se preocupar com as forças que o causam. No contexto de braços robóticos, ela é dividida fundamentalmente em dois problemas: a cinemática direta e a inversa \cite{spong2020}.
 
-\section{Tecnologias de Simulação}
-\label{sec:fundamentacao-teorica-b}
+\subsection{Parâmetros de Denavit-Hartenberg (D-H)}
+Para representar geometricamente as ligações entre os elos de um robô, utiliza-se a convenção de Denavit-Hartenberg (D-H). Este método padroniza a descrição da geometria do robô através de quatro parâmetros para cada elo: comprimento do elo ($a$), torção do elo ($\alpha$), deslocamento do elo ($d$) e ângulo da junta ($\theta$) \cite{craig2017}. 
 
-A integração de bibliotecas gráficas para simulação precisa do robô é fundamental. Bibliotecas open source, como SDL (Simple DirectMedia Layer), facilitam a criação de interfaces interativas, permitindo controle intuitivo da simulação. A interface gráfica, desenvolvida com ImGui, exibe parâmetros do robô e permite ajustes interativos, melhorando a usabilidade educacional.
 
- \begin{figure}[h!]
-    \centering
-	\Caption{\label{fig:Figura-1}  Fluxo de dados entre o sistema de simulação 3D e a interface gráfica, ilustrando a interação entre entrada do usuário e visualização virtual.}	
-	\UNIFORfig{}{
-		\fbox{\includegraphics[width=8cm]{figuras/figura-2}}
-	}{
-		\Fonte{Elaborado pelo autor}			
-	}	
-\end{figure}
 
-A Figura~\ref{fig:Figura-1} exibe um diagrama mostrando a interação entre o software de simulação, a interface gráfica, e a visualização 3D, com dados de entrada do usuário e saída visual na simulação.
+A partir desses parâmetros, constroem-se matrizes de transformação homogênea que, quando multiplicadas sequencialmente, permitem calcular a posição e orientação do efetuador final em relação à base.
 
-\section{Simulação 3D em Tempo Real}
-\label{sec:fundamentacao-teorica-c}
+\subsection{Cinemática Inversa e Algoritmo FABRIK}
+Enquanto a cinemática direta possui solução única e analítica, a cinemática inversa — encontrar os ângulos das juntas para uma dada posição final — é um problema complexo e não linear, frequentemente admitindo múltiplas soluções. 
 
-A simulação 3D em tempo real permite ao usuário visualizar os movimentos do robô em um ambiente virtual, facilitando a compreensão da cinemática e o aprendizado. Utilizando OpenGL para renderização, GLM para cálculos de algebra linear, e Assimp para carregar modelos 3D (e.g.,\textit{rv2sdb.obj}), o software representa fielmente o robô e seus movimentos. A simulação reflete as especificações do robô, como o alcance de ±240° da junta J1, garantindo precisão visual e educacional.
+Para aplicações em tempo real, métodos iterativos são preferíveis devido ao seu baixo custo computacional. Neste trabalho, destaca-se o algoritmo FABRIK (\textit{Forward And Backward Reaching Inverse Kinematics}). Diferente dos métodos baseados no Jacobiano, o FABRIK utiliza uma abordagem geométrica heurística, ajustando iterativamente as posições das juntas para minimizar o erro em relação ao alvo, garantindo convergência rápida e estabilidade visual \cite{aristidou2011fabrik}.
 
-\section{Design de Software}
-\label{sec:fundamentacao-teorica-d}
+\section{Simulação Física e Detecção de Colisão}
+\label{sec:colisao}
 
-O software foi desenvolvido seguindo princípios de modularidade, com separação de preocupações entre renderização, entrada de dados, cinemática, e interface gráfica. Isso permite manutenção e escalabilidade, facilitando a adaptação para outros robôs ou aplicações educacionais. A arquitetura modular é suportada por bibliotecas como fmt para logging e xmake para gerenciamento de compilação.
+O realismo de uma simulação depende não apenas do movimento visual, mas da interação física dos objetos. A detecção de colisão impede que o robô atravesse a si mesmo (auto-colisão) ou objetos do cenário.
 
- \begin{figure}[h!]
-    \centering
-	\Caption{\label{fig:Figura-2}  Representação esquemática da arquitetura do software, destacando os módulos de simulação e renderização.}	
-	\UNIFORfig{}{
-		\fbox{\includegraphics[width=8cm]{figuras/figura-2}}
-	}{
-		\Fonte{Elaborado pelo autor}			
-	}	
-\end{figure}
+O algoritmo GJK (\textit{Gilbert-Johnson-Keerthi}) é o padrão da indústria para detectar a intersecção entre poliedros convexos. Ele utiliza a soma de Minkowski para determinar, de forma eficiente, se dois objetos compartilham espaço \cite{gjk1988}. Quando uma colisão é detectada, o algoritmo EPA (\textit{Expanding Polytope Algorithm}) é frequentemente empregado para calcular a profundidade de penetração e o vetor de repulsão necessário para corrigir a posição física \cite{van1999epa}.
+
+\section{Tecnologias de Desenvolvimento}
+\label{sec:tecnologias}
+
+A implementação do software baseia-se em um conjunto de bibliotecas de alto desempenho, escolhidas para garantir a fluidez da simulação em hardware convencional.
+
+\subsection{Renderização com OpenGL e GLM}
+A visualização tridimensional é realizada via OpenGL, uma API gráfica multiplataforma que interage diretamente com a GPU \cite{opengl2015}. Para abstrair a complexidade matemática das operações vetoriais e matriciais necessárias tanto para o OpenGL quanto para os cálculos de cinemática, utiliza-se a biblioteca GLM (\textit{OpenGL Mathematics}) \cite{glm2016}.
+
+
+
+\subsection{Interface Gráfica e Gerenciamento de Janelas}
+A interação do usuário é mediada pela biblioteca \textit{Dear ImGui}, que adota o paradigma de "Immediate Mode GUI". Isso permite que os elementos da interface (botões, sliders, gráficos) sejam renderizados juntamente com a cena 3D, facilitando a criação de ferramentas de depuração em tempo real \cite{imgui}. O gerenciamento do contexto da janela e dos eventos de entrada (teclado/mouse) fica a cargo da biblioteca SDL2 \cite{sdl2}, garantindo portabilidade entre sistemas operacionais.

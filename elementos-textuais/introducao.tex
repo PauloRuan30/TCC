@@ -1,36 +1,41 @@
 \chapter{Introdução}
 \label{cap:introducao}
 
-A automação industrial tem desempenhado um papel fundamental na otimização de processos de produção e na busca por maior eficiência operacional. Nesse contexto, braços robóticos, como os da série Mitsubishi RV-2SDB/RV-2SQB, emergem como ferramentas essenciais para a execução de tarefas complexas com precisão e repetitividade. Contudo, muitas empresas enfrentam desafios para manter esses equipamentos atualizados e funcionais, especialmente quando a manutenção depende de fornecedores externos, o que eleva custos e tempo de inatividade.
+A automação industrial contemporânea, impulsionada pelos paradigmas da Indústria 4.0 \cite{schwab2017}, tem transformado radicalmente as linhas de produção globais. Nesse cenário, a robótica desempenha um papel central na busca por eficiência, precisão e repetibilidade operacional. Manipuladores robóticos, como os da série Mitsubishi RV-2SDB, são amplamente utilizados para tarefas complexas que variam desde a soldagem até a montagem de componentes eletrônicos \cite{craig2017}.
 
-Neste trabalho, propõe-se a criação de um software de simulação 3D para braços robóticos, especificamente modelado para o Mitsubishi RV-2SDB/RV-2SQB. A solução, desenvolvida em um ambiente de baixo custo e baseada em bibliotecas open source, visa oferecer uma ferramenta educacional e de treinamento para operadores e estudantes. O destaque principal é a simulação 3D em tempo real, permitindo ao usuário visualizar e acompanhar os movimentos do braço robótico em um ambiente virtual, facilitando o aprendizado e a compreensão da cinemática robótica.
 
-A relevância do projeto reside na possibilidade de oferecer uma ferramenta educacional acessível para o ensino de robótica e cinemática, criando um software de simulação que integra interface gráfica e visualização 3D, ampliando a compreensão das operações robóticas. Além disso, possibilita o compartilhamento e aprimoramento contínuo, já que o código segue uma filosofia open source, beneficiando o meio acadêmico e educacional.
 
-Este documento descreve a fundamentação teórica que embasa o desenvolvimento, a abordagem metodológica adotada, os resultados obtidos e as implicações práticas na educação e na comunidade acadêmica. Espera-se demonstrar que a simulação 3D pode proporcionar maior compreensão, usabilidade e escalabilidade às ferramentas educacionais de robótica.
+Entretanto, a adoção massiva dessas tecnologias esbarra em um desafio crítico: a formação de mão de obra qualificada. A complexidade matemática e operacional desses equipamentos impõe uma curva de aprendizado íngreme. Além disso, o alto custo de aquisição e manutenção de células robóticas físicas restringe o acesso de estudantes e pesquisadores a esses recursos, criando uma lacuna entre a teoria ensinada em sala de aula e a prática exigida pelo mercado.
+
+Diante desse desafio, a simulação computacional emerge como uma solução viável e segura. Este trabalho propõe o desenvolvimento de um software de simulação 3D voltado especificamente para a modelagem e controle virtual do braço robótico Mitsubishi RV-2SDB. A solução foi construída em um ambiente de baixo custo, utilizando bibliotecas \textit{open source}, com o intuito de democratizar o acesso a ferramentas de treinamento. O diferencial da proposta reside na implementação de uma simulação 3D em tempo real, que permite ao usuário visualizar a cinemática do robô e interagir com seus movimentos em um ambiente virtual seguro, mitigando riscos de danos ao equipamento real durante a fase de aprendizado.
 
 \section{Motivação}
 \label{sec:motivacao}
 
-A motivação central deste trabalho surge da necessidade de uma ferramenta educacional para o ensino de robótica, especificamente para o modelo \textit{Mitsubishi RV-2SDB/RV-2SQB}. A abordagem escolhida foca em soluções de baixo custo e ferramentas open source, criando uma simulação 3D que facilite o aprendizado da cinemática robótica.
+A motivação central deste trabalho origina-se da necessidade de ferramentas de apoio didático que sejam, ao mesmo tempo, tecnicamente precisas e financeiramente acessíveis. Em muitos laboratórios universitários, a relação entre o número de alunos e o número de robôs disponíveis é desproporcional, limitando o tempo de prática individual.
 
-Em cenários educacionais, a falta de equipamentos físicos limita o aprendizado prático de robótica. Uma simulação 3D realista que permita visualizar movimentos, testar configurações e compreender a cinemática pode melhorar significativamente o processo de ensino-aprendizagem. A motivação, portanto, combina fatores educacionais, técnicos e pedagógicos, buscando uma solução modular e flexível para o ensino de robótica.
+Uma simulação 3D realista atua como um complemento indispensável. Ao mimetizar os comportamentos cinemáticos do robô físico, o software permite que o estudante teste configurações, valide algoritmos de cinemática inversa e compreenda o espaço de trabalho do manipulador antes de enviar comandos para a máquina real \cite{robodk2020}. Portanto, este projeto é motivado pela convergência entre demandas pedagógicas e a aplicação prática de engenharia de software e computação gráfica.
 
 \section{Objetivos}
 \label{sec:objetivos}
 
-Os objetivos geral e específicos deste projeto visam oferecer uma solução completa para simulação e ensino do braço robótico Mitsubishi RV-2SDB/RV-2SQB em ambiente educacional. A aplicação integra \textit{software} e interface gráfica, com simulação 3D em tempo real para melhorar visualização e compreensão da cinemática robótica.
+Esta seção delineia as metas estabelecidas para garantir a eficácia da solução proposta como ferramenta de ensino e simulação.
+
 \subsection{Objetivo Geral}
 \label{sec:objetivo-geral}
 
-Desenvolver um software de simulação 3D robusto \textit{open source} para braços robóticos, permitindo visualização interativa e compreensão da cinemática, além de oferecer uma simulação 3D em tempo real que demonstre os movimentos e comportamentos do robô.
+Desenvolver um software de simulação 3D \textit{open source} para manipuladores robóticos, que permita a visualização interativa em tempo real e facilite a compreensão prática da cinemática direta e inversa do robô Mitsubishi RV-2SDB.
 
 \subsection{Objetivos Específicos}
 \label{sec:objetivos-especificos}
 
-Os objetivos específicos incluem modelar e implementar a cinemática de um braço robótico, criar um protocolo universal para comunicação com braços robóticos, 
-definindo as transformações matemáticas necessárias para representar e simular fielmente o movimento e funcionamento do braço robôtico Mitsubishi RV-2SDB/RV-2SQB. 
-Além disso, pretende-se integrar controles interativos à interface gráfica, de modo a fornecer uma experiência de usuário intuitiva para manipulação da simulação.
-O desenvolvimento e incorporação de uma simulação 3D em tempo real permitirá visualização precisa dos movimentos do braço robótico e facilitará a compreensão da cinemática. 
-A avaliação do desempenho do sistema em cenários de teste verificará a precisão da simulação, usabilidade da interface e eficiência computacional.
-Por fim, o projeto será documentado em formato \textit{open source}, compartilhando bibliotecas e instruções que facilitem a adaptação para outros modelos de braços robóticos ou aplicações educacionais.
+Para alcançar o objetivo geral, foram definidos os seguintes objetivos específicos:
+
+\begin{itemize}
+    \item Modelar matematicamente a cadeia cinemática do robô utilizando a convenção de Denavit-Hartenberg (D-H), respeitando os limites de juntas e dimensões do modelo real;
+    \item Implementar algoritmos de cinemática inversa eficientes, como o FABRIK, capazes de resolver a postura do robô em tempo real;
+    \item Desenvolver uma interface gráfica (GUI) intuitiva baseada em ImGui, permitindo o controle granular de cada junta e do efetuador final;
+    \item Integrar um sistema de detecção de colisão robusto para garantir o realismo físico da simulação;
+    \item Validar o desempenho do sistema comparando os resultados simulados com os dados teóricos do manual do fabricante;
+    \item Disponibilizar o código-fonte sob licença livre, fomentando a colaboração acadêmica e a extensão do projeto para outros modelos de robôs.
+\end{itemize}

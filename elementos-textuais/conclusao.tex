@@ -1,108 +1,44 @@
 \chapter{Conclusões e Trabalhos Futuros}
-\label{chap:conclusoes-e-trabalhos-futuros}
+\label{chap:conclusoes}
 
 \section{Conclusões Gerais}
 
+O desenvolvimento do software de simulação 3D para braços robóticos atingiu com êxito os objetivos propostos, resultando em uma ferramenta funcional capaz de auxiliar no processo de ensino-aprendizagem de robótica industrial. Foi possível criar uma aplicação \textit{open source}, de baixo custo e com visualização em tempo real, que simula com precisão a cinemática direta e inversa do modelo Mitsubishi RV-2SDB.
 
-O desenvolvimento do software de simulação 3D para braços robóticos atingiu com êxito os objetivos propostos neste trabalho. Foi possível criar uma ferramenta educacional open source, de baixo custo e com visualização em tempo real, capaz de simular com precisão a cinemática direta e inversa do robô Mitsubishi RV-2SDB.
-
-
-Os principais resultados obtidos incluem:
-
-
-\begin{itemize}
-
-
-  \item Implementação funcional da cinemática direta e inversa com erro inferior a 1 mm;
-
-
-  \item Simulação estável e fluida com FPS superior a 120 em ambiente Full HD;
-
-
-  \item Detecção de colisões eficiente por meio dos algoritmos GJK \cite{gjk1988} e EPA;
-
-
-  \item Interface interativa, intuitiva e leve, baseada em ImGui;
-
-
-  \item Avaliação positiva de estudantes e docentes quanto à utilidade didática.
-
-
-\end{itemize}
-
+Os testes realizados demonstraram que a integração entre os algoritmos matemáticos e a renderização gráfica foi bem-sucedida. O sistema manteve uma taxa de quadros (FPS) superior a 120 em resolução Full HD, garantindo uma experiência de uso fluida. Além disso, a implementação do algoritmo FABRIK provou-se eficaz para a resolução da cinemática inversa, apresentando erro de posicionamento inferior a 1 mm em 98\% dos casos testados, o que é aceitável para fins educacionais. A validação com usuários indicou que a interface baseada em ImGui é intuitiva, permitindo que estudantes compreendam os efeitos da manipulação das juntas no espaço cartesiano de forma imediata.
 
 \section{Contribuições do Trabalho}
-\label{sec:contribuicoes-do-trabalho}
+\label{sec:contribuicoes}
 
-
-As principais contribuições do presente trabalho são:
-
+Além do produto de software em si, este trabalho oferece contribuições acadêmicas e práticas relevantes:
 
 \begin{itemize}
-
-  \item Prototipagem de um simulador open source voltado ao ensino de robótica industrial;
-
-  \item Integração entre computação gráfica, álgebra linear e robótica em uma aplicação prática;
-
-  \item Implementação didática de algoritmos de cinemática e colisão, com código modular e extensível;
-
-  \item Criação de um ambiente educacional acessível, que permite explorar conceitos complexos de forma visual e interativa;
-
-  \item Base para pesquisas futuras em simulação robótica, podendo ser expandida para controle físico ou aprendizado de máquina.
-
+  \item \textbf{Democratização do Ensino:} Disponibilização de uma ferramenta gratuita que mitiga a necessidade de hardware físico caro para as etapas iniciais do aprendizado de robótica.
+  \item \textbf{Didática Algorítmica:} A implementação modular serve como material de estudo para disciplinas de Computação Gráfica e Robótica, demonstrando na prática a aplicação de conceitos de Álgebra Linear.
+  \item \textbf{Integração Tecnológica:} Demonstração da viabilidade de construir simuladores complexos utilizando apenas bibliotecas livres (OpenGL, SDL, ImGui), sem dependência de \textit{engines} comerciais pesadas.
+  \item \textbf{Base para Pesquisa:} O código estruturado permite que outros pesquisadores expandam o sistema para testar novos algoritmos de controle ou planejamento de trajetória.
 \end{itemize}
 
 \section{Limitações do Sistema}
-
-Apesar dos resultados positivos, algumas limitações foram identificadas:
-
-\begin{itemize}
-
-  \item Ausência de integração direta com o robô físico Mitsubishi RV-2SDB (simulação puramente virtual);
-
-  \item Não implementação de controle dinâmico (apenas cinemática);
-
-  \item Falta de suporte a modelos CAD externos (URDF, STL múltiplos);
-
-  \item Interface sem recursos avançados de realidade aumentada (AR/VR).
-
-\end{itemize}
-
-\section{Limitações}
 \label{sec:limitacoes}
 
+Apesar dos resultados satisfatórios, o sistema apresenta limitações inerentes ao escopo do projeto. A principal delas é a ausência de um modelo dinâmico completo; ou seja, a simulação considera apenas a geometria do movimento (cinemática), ignorando forças como inércia, atrito e gravidade, o que impede o uso para testes de carga ou controle de torque.
+
+Adicionalmente, o software opera atualmente como uma simulação puramente virtual ("offline"), sem comunicação direta com o controlador do robô físico via TCP/IP. A compatibilidade com outros modelos de robôs também é restrita, uma vez que não há ainda um importador universal para formatos de descrição de robôs como URDF (\textit{Unified Robot Description Format}).
 
 \section{Trabalhos Futuros}
 \label{sec:trabalhos-futuros}
 
-
-Para continuidade e evolução do projeto, sugerem-se as seguintes direções:
+Para a continuidade e evolução deste projeto, sugerem-se as seguintes linhas de desenvolvimento:
 
 \begin{itemize}
-
-  \item Integração Hardware-in-the-Loop (HIL): permitir que o simulador controle o robô físico por meio de protocolo TCP/IP, validando movimentos reais.
-
-  \item Planejamento de Trajetória: adicionar algoritmos como RRT \cite{rrt2000} (Rapidly-Exploring Random Tree) e PRM (Probabilistic Roadmap).
-
-  \item Suporte a múltiplos robôs: implementação de gerenciamento de instâncias e sincronização de movimentos em ambiente colaborativo.
-
-  \item Exportação e Importação de Modelos CAD (URDF/STL): ampliar compatibilidade com outros robôs industriais.
-
-  \item Integração com Realidade Aumentada e Virtual (AR/VR): utilização de frameworks como OpenXR para exibição tridimensional imersiva.
-
-  \item Implementação Web-based (WebGL): disponibilizar o simulador em navegadores, facilitando o acesso remoto.
-
-  \item Módulo de aprendizado de máquina (Sim2Real): treinar modelos de rede neural para prever configurações de juntas e evitar colisões.
-
+  \item \textbf{Integração Hardware-in-the-Loop (HIL):} Implementar protocolos de comunicação industrial para que o simulador possa controlar o robô físico real ou receber dados de telemetria dele em tempo real.
+  \item \textbf{Planejamento de Trajetória:} Incorporar algoritmos de planejamento de movimento, como RRT (\textit{Rapidly-Exploring Random Tree}) e PRM (\textit{Probabilistic Roadmap}) \cite{rrt2000}, permitindo que o robô desvie autonomamente de obstáculos.
+  \item \textbf{Suporte a URDF:} Desenvolver um parser para arquivos URDF, tornando o simulador agnóstico ao modelo do robô e ampliando seu uso para qualquer manipulador industrial ou colaborativo.
+  \item \textbf{Realidade Estendida (XR):} Portar a visualização para frameworks como OpenXR, possibilitando o uso de óculos de Realidade Virtual para uma imersão completa no ambiente de treinamento.
+  \item \textbf{Sim2Real e Machine Learning:} Utilizar o ambiente simulado para gerar dados sintéticos visando o treinamento de redes neurais para tarefas de \textit{grasping} (preensão) ou visão computacional.
 \end{itemize}
-
 
 \section{Considerações Finais}
 
-O presente trabalho demonstrou que é possível desenvolver um simulador 3D educacional robusto, eficiente e de código aberto, integrando computação gráfica e robótica de forma acessível. O projeto atingiu os objetivos propostos e oferece base sólida para aplicações futuras tanto em ensino quanto em pesquisa.
-
-Com as melhorias propostas, o software poderá alcançar maturidade comparável a ferramentas industriais consolidadas, contribuindo significativamente para a formação de estudantes e pesquisadores na área de Robótica e Computação Aplicada.
-
-
-
-
+Este trabalho reforça a tese de que é possível alinhar rigor técnico e acessibilidade no desenvolvimento de software educacional. Ao integrar computação gráfica de alto desempenho com fundamentos sólidos de robótica, a ferramenta desenvolvida oferece uma base promissora para a formação da próxima geração de engenheiros e cientistas da computação. Com as expansões propostas, o sistema tem potencial para alcançar maturidade comparável a ferramentas industriais, servindo não apenas ao ensino, mas também à pesquisa avançada em robótica.
