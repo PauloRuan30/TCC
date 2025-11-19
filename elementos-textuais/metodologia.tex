@@ -238,15 +238,83 @@ O algoritmo EPA (Expanding Polytope Algorithm) complementa o GJK calculando info
 
 \subsection{Embasamento Matematico dos Algoritmos de Simulação Robótica}
 
-\begin{alineascomnumero}
-\item FABRIK (cinemática inversa de alcance para frente e para trás)
-\item GGD (Descida de coordenação cíclica)
-\item GJK (Gilbert Johnson Keerthi): Cálculo de colisão para simulação física realista.
-\item TSE (Teorema de separação de eixos): Cálculo de colisão para simulação física realista.
-\item EPA (Algoritmo de expansão de politopo)
-\item Adição de Minkowski: Função suporte para o algoritmo de GJK.
-\item Sistemas de arbitração para simulação
-\end{alineascomnumero}
+Os algoritmos implementados cobrem cinemática, detecção de colisão e otimização de movimentos. Abaixo apresenta-se um resumo técnico de cada componente (o trabalho final deve incluir detalhes formais, equações D--H e provas/validações sempre que possível).
+
+\subsubsection{FABRIK (cinemática inversa de alcance para frente e para trás)}
+O FABRIK (Forward And Backward Reaching Inverse Kinematics) é um algoritmo heurístico e iterativo para resolver problemas de cinemática inversa. A sua base matemática reside na geometria de vetores e na interpolação linear para ajustar as posições das juntas de uma cadeia cinemática, mantendo os comprimentos dos elos constantes.
+
+O processo iterativo consiste em duas fases:
+
+\begin{itemize}
+    \item \textbf{Fase Inversa (Backward Reaching):} A partir do efetuador final, que é movido para a posição alvo ($t$), cada junta $p_i$ é ajustada para manter a distância $d_i$ em relação à junta seguinte $p_{i+1}$. A nova posição de $p_i$ é calculada pela interpolação:
+    \begin{equation}
+        p_i = (1 - \lambda_i) p_{i+1} + \lambda_i p_i
+    \end{equation}
+    onde $\lambda_i = \frac{d_i}{|p_{i+1} - p_i|}$.
+
+    \item \textbf{Fase Direta (Forward Reaching):} A partir da junta raiz $p_1$, que é fixada na sua posição original, o processo é repetido em direção ao efetuador final. A posição da junta $p_{i+1}$ é ajustada em relação a $p_i$:
+    \begin{equation}
+        p_{i+1} = (1 - \lambda_i) p_i + \lambda_i p_{i+1}
+    \end{equation}
+\end{itemize}
+Estas fases são repetidas até que a distância entre o efetuador final e o alvo seja menor que uma tolerância definida.
+
+\subsubsection{GGD (Descida de coordenação cíclica)}
+A Descida de Coordenadas Cíclicas (Cyclic Coordinate Descent - CCD) é um algoritmo de otimização que minimiza uma função multivariada, otimizando uma variável de cada vez, mantendo as outras constantes. Este processo é repetido ciclicamente para todas as variáveis até que um mínimo seja alcançado.
+
+Para minimizar uma função $F(x)$ onde $x = (x_1, x_2, ..., x_n)$, o algoritmo atualiza cada coordenada $x_i$ sequencialmente:
+\begin{equation}
+    x_i^{(k+1)} = \arg\min_{y} F(x_1^{(k+1)}, ..., x_{i-1}^{(k+1)}, y, x_{i+1}^{(k)}, ..., x_n^{(k)})
+\end{equation}
+onde $k$ é a iteração atual. O algoritmo converge quando a alteração na função objetivo $F(x)$ ou no vetor de parâmetros $x$ se torna insignificante.
+
+\subsubsection{GJK (Gilbert Johnson Keerthi): Cálculo de colisão para simulação física realista}
+O algoritmo GJK (Gilbert-Johnson-Keerthi) é um método eficiente para determinar se duas formas convexas estão a colidir. Ele opera procurando iterativamente a origem dentro da Diferença de Minkowski das duas formas.
+
+A Diferença de Minkowski de duas formas convexas, A e B, é definida como:
+\begin{equation}
+    A - B = \{a - b | a \in A, b \in B\}
+\end{equation}
+A colisão ocorre se, e somente se, a origem estiver contida em $A - B$. O GJK utiliza uma função de suporte para sondar pontos na Diferença de Minkowski sem a calcular explicitamente:
+\begin{equation}
+    s_{A-B}(d) = s_A(d) - s_B(-d)
+\end{equation}
+onde $s_S(d)$ é o ponto no limite da forma $S$ que está mais distante na direção $d$. O algoritmo constrói iterativamente um simplex (um polígono convexo) dentro da Diferença de Minkowski, tentando envolver a origem.
+
+\subsubsection{TSE (Teorema de separação de eixos): Cálculo de colisão para simulação física realista}
+O Teorema de Separação de Eixos (Separating Axis Theorem - SAT) afirma que dois objetos convexos não estão a colidir se, e somente se, existir pelo menos uma linha (em 2D) ou plano (em 3D) no qual as projeções dos dois objetos não se sobrepõem. Esta linha ou plano é chamado de "eixo de separação".
+
+Para cada eixo candidato (normal a uma aresta/face), as formas A e B são projetadas, resultando em intervalos 1D $[min_A, max_A]$ e $[min_B, max_B]$. Um eixo de separação é encontrado se:
+\begin{equation}
+    max_A < min_B \quad \text{ou} \quad max_B < min_A
+\end{equation}
+Se nenhum eixo de separação for encontrado após testar todos os eixos candidatos, as formas estão a colidir.
+
+\subsubsection{EPA (Algoritmo de expansão de politopo)}
+O Algoritmo de Expansão de Politopo (Expanding Polytope Algorithm - EPA) é usado após o GJK detetar uma colisão. O seu objetivo é calcular a profundidade de penetração e o vetor de contacto.
+
+O EPA começa com o simplex final gerado pelo GJK, que contém a origem. Em cada iteração, o algoritmo encontra a face (ou aresta em 2D) do politopo atual que está mais próxima da origem. Usando a normal dessa face como direção, ele consulta a função de suporte da Diferença de Minkowski para encontrar um novo ponto no limite da Diferença de Minkowski. Este ponto é adicionado ao politopo, expandindo-o. O processo termina quando o novo ponto de suporte não está significativamente mais longe do que a face mais próxima, e a distância da origem a essa face é a profundidade de penetração.
+
+\subsubsection{Adição de Minkowski: Função suporte para o algoritmo de GJK}
+A Adição de Minkowski (ou Soma de Minkowski) de dois conjuntos de pontos, A e B, é definida como o conjunto de todas as somas de vetores possíveis de um elemento de A e um elemento de B:
+\begin{equation}
+    A + B = \{a + b | a \in A, b \in B\}
+\end{equation}
+Esta operação é fundamental para a teoria de deteção de colisão, pois a colisão entre A e B é equivalente à origem estar contida na sua Diferença de Minkowski, $A - B$. A função de suporte do GJK é uma forma eficiente de explorar a Diferença de Minkowski.
+
+\subsubsection{Sistemas de arbitração para simulação}
+Os sistemas de arbitragem em simulações gerem o acesso a recursos partilhados ou o controlo entre múltiplos agentes. A sua base matemática varia consoante a estratégia:
+\begin{itemize}
+    \item \textbf{Baseada em Prioridade:} Acesso é concedido ao agente $k$ com a maior prioridade $P_k$:
+    \begin{equation}
+        \text{Agente}_k \text{ tal que } P_k = \max_{i \in \text{Requerentes}} (P_i)
+    \end{equation}
+    \item \textbf{Baseada em Utilidade:} O árbitro maximiza a utilidade total, onde $U_i$ é a utilidade do agente $i$ e $x_i$ é uma variável de decisão binária:
+    \begin{equation}
+        \max \sum_{i=1}^N U_i \cdot x_i \quad \text{sujeito a} \quad \sum_{i=1}^N x_i \le 1
+    \end{equation}
+    \item \textbf{Teoria das Filas:} Modela a chegada e o serviço de pedidos de recursos usando distribuições de probabilidade (e.g., Poisson, Exponencial) para analisar métricas como o tempo de espera e o comprimento da fila.
+\end{itemize}
 
 \section{Usando Código-fonte}
 
@@ -263,69 +331,6 @@ public class HelloWorld {
 	}
 }
 \end{lstlisting}
-
-\lipsum[11]
-
-\section{Usando Teoremas, Proposições, etc}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra. consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
-
-\begin{teo}[Pitágoras]
-	Em todo triângulo retângulo o quadrado do comprimento da
-	hipotenusa é igual a soma dos quadrados dos comprimentos dos catetos.
-\end{teo}
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra. consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
-
-\begin{teo}[Fermat]
-	Não existem inteiros $n > 2$, e $x, y, z$ tais que $x^n + y^n = z$
-\end{teo}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra. consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
-
-\begin{prop}
-	Para demonstrar o Teorema de Pitágoras...
-\end{prop}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra. consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
-
-\begin{exem}
-	Este é um exemplo do uso do ambiente exe definido acima.
-\end{exem}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra. consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
-
-\begin{xdefinicao}
-	Definimos o produto de ...
-\end{xdefinicao}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra. consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
-
-\section{Usando Questões}
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra. consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
-
-\begin{questao}
-	\item Esta é a primeira questão com alguns itens:
-		\begin{enumerate}
-			\item Este é o primeiro item
-			\item Segundo item
-		\end{enumerate}
-	\item Esta é a segunda questão:
-		\begin{enumerate}
-			\item Este é o primeiro item
-			\item Segundo item
-		\end{enumerate}
-	\item Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dictum sed tortor nec viverra. consectetur adipiscing elit. Nunc dictum sed tortor nec viverra.
-		\begin{enumerate}
-			\item consectetur
-			\item adipiscing
-			\item Nunc
-			\item dictum
-		\end{enumerate}
-\end{questao}
 
 \section{Citações}
 

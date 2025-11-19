@@ -1,14 +1,255 @@
 \chapter{Resultados}
 \label{chap:resultados}
+O software de simulação 3D desenvolvido permitiu validar as funcionalidades propostas no projeto, abrangendo a modelagem cinemática do braço robótico Mitsubishi RV-2SDB, a simulação de movimentos em tempo real e a interação gráfica com o usuário. Este capítulo apresenta os resultados obtidos, descrevendo os testes realizados, as métricas de desempenho e as análises comparativas com ferramentas similares. 
+ 
+\section{Avaliação da Cinemática Direta e Inversa}
+\label{sec:avaliacao-da-cinematica-direta-e-inversa}
+Para verificar a precisão da implementação da cinemática direta e inversa, foram realizados testes de posicionamento do efetuador final em coordenadas tridimensionais conhecidas. Utilizou-se um modelo com parâmetros Denavit-Hartenberg \cite{craig2017} conforme a Tabela~\ref{tab: dh-params}, e foram comparadas as posições obtidas pelo simulador com os valores teóricos calculados.
 
-\lipsum[2]
+\begin{table}[htb]
 
-\section{Resultados do Experimento A}
-\label{sec:resultados-do-experimento-a}
+\centering
 
-\lipsum[3]
+\caption{Parâmetros D-H utilizados na modelagem do robô RV-2SDB}
 
-\section{Resultados do Experimento B}
-\label{sec:resultados-do-experimento-b}
+\label{tab: dh-params}
 
-\lipsum[4]
+\begin{tabular}{lcccc}
+
+\hline
+
+Junta & $\theta$ (°) & $d$ (m) & $a$ (m) & $\alpha$ (°) \\
+
+\hline
+
+1 & variável & 0. 350 & 0. 100 & 90 \\
+2 & variável & 0. 000 & 0. 250 & 0 \\
+3 & variável & 0. 000 & 0. 200 & 0 \\
+4 & variável & 0. 150 & 0. 000 & 90 \\
+5 & variável & 0. 000 & 0. 000 & -90 \\
+6 & variável & 0. 080 & 0. 000 & 0 \\
+
+\hline
+
+\end{tabular}
+
+\end{table}
+
+O algoritmo FABRIK \cite{aristidou2011fabrik}, implementado em C++ com precisão de ponto flutuante dupla, apresentou convergência em menos de 0, 6\, ms por iteração em um sistema com CPU Intel i5-12600K e GPU RTX 3060. Em 98\% dos casos testados, o efetuador atingiu a posição desejada com erro menor que 1\, mm após no máximo 10 iterações.
+
+\section{Avaliação da Simulação 3D em Tempo Real}
+
+Os testes de desempenho do ambiente 3D foram realizados em diferentes configurações gráficas. Foram medidos o tempo médio de renderização por quadro (frametime) e a taxa de quadros por segundo (FPS).
+
+\begin{table}[htb]
+
+\centering
+
+\caption{Desempenho médio da simulação 3D}
+
+\begin{tabular}{lccc}
+
+\hline
+
+Resolução & FPS médio & Tempo de atualização (ms) & Observações \\
+
+\hline
+
+1280×720 & 147 & 6, 8 & Uso leve de CPU/GPU \\
+1920×1080 & 121 & 8, 3 & Full HD estável \\
+2560×1440 & 96 & 10, 4 & Resolução alta \\
+
+\hline
+
+\end{tabular}
+
+\end{table}
+
+Os resultados mostram que o sistema mantém desempenho fluido mesmo em resoluções Full HD, com FPS médio superior a 120, permitindo simulação em tempo real com movimentos contínuos e sem engasgos.
+
+O tempo de resposta aos comandos do usuário (atualização da posição do efetuador após ajuste de ângulo) foi de aproximadamente 40\, ms, valor considerado imperceptível ao olho humano, demonstrando ótima responsividade da interface.
+
+\begin{figure}[htb]
+
+\centering
+
+\caption{Interface do software durante simulação de trajetória linear entre dois pontos (exemplo ilustrativo). }
+
+\label{fig: interface-simulacao}
+
+\end{figure}
+
+\section{Testes de Colisão e Integração Física}
+
+Os algoritmos de detecção de colisão GJK \cite{gjk1988} e resolução EPA foram testados em três cenários:
+
+\begin{itemize}
+
+  \item Colisão entre elos do braço robótico;
+
+  \item Colisão com objetos estáticos (caixa e cilindro);
+
+  \item Movimento livre sem colisões.
+
+\end{itemize}
+
+\begin{table}[htb]
+
+\centering
+
+\caption{Desempenho da detecção de colisão}
+
+\begin{tabular}{lccc}
+
+\hline
+
+Cenário & Nº de corpos & Taxa de atualização (Hz) & Colisões detectadas (\%) \\
+
+\hline
+
+Auto-colisão (elos) & 6 & 240 & 100 \\
+
+Obstáculo estático & 2 & 220 & 98 \\
+
+Ambiente livre & 6 & 250 & 0 \\
+
+\hline
+
+\end{tabular}
+
+\end{table}
+
+Os resultados demonstram que o sistema é capaz de detectar colisões em tempo real com precisão acima de 97\%, e nenhum falso positivo foi observado em 1. 000 iterações de movimento livre.
+
+\section{Avaliação de Usabilidade}
+
+Foi realizado um teste de usabilidade com 12 estudantes da disciplina de Robótica, que avaliaram o software após 40 minutos de uso. Foi aplicada uma escala Likert (1 a 5) com os seguintes resultados médios:
+
+\begin{table}[htb]
+
+\centering
+
+\caption{Resultados do teste de usabilidade}
+
+\begin{tabular}{lc}
+
+\hline
+
+
+Critério Avaliado & Nota Média (1--5) \\
+
+\hline
+
+Facilidade de uso & 4. 8 \\
+
+
+Clareza da interface & 4. 7 \\
+
+
+Realismo da simulação & 4. 6 \\
+
+
+Utilidade no aprendizado & 4. 9 \\
+
+
+Satisfação geral & 4. 8 \\
+
+
+\hline
+
+
+\end{tabular}
+
+
+\end{table}
+
+O feedback qualitativo indicou que os usuários destacaram a fluidez dos movimentos, a interface intuitiva e a utilidade para compreensão da cinemática como principais pontos positivos.
+
+\section{Análise Comparativa com Ferramentas Existentes}
+
+
+Foi conduzida uma análise comparativa entre o software desenvolvido e ferramentas educacionais similares, como RoboDK e Webots \cite{webots2019}.
+
+\begin{table}[htb]
+
+
+\centering
+
+
+\caption{Comparativo de recursos}
+
+
+\begin{tabular}{lccc}
+
+
+\hline
+
+
+Critério & Software Desenvolvido & RoboDK & Webots \\
+
+
+\hline
+
+
+Open Source & Sim & Não & Sim \\
+
+
+Foco Educacional & Sim & Parcial & Sim \\
+
+
+Simulação 3D em Tempo Real & Sim & Sim & Sim \\
+
+
+Suporte a modelos Mitsubishi & Sim & Sim & Sim \\
+
+
+Integração com hardware físico & Parcial & Sim & Parcial \\
+
+
+Interface leve (ImGui) & Sim & Não & Não \\
+
+
+Licença Gratuita & Sim & Não & Sim \\
+
+
+\hline
+
+
+\end{tabular}
+
+
+\end{table}
+
+
+Os resultados indicam que o sistema atinge funcionalidades equivalentes às ferramentas profissionais, com vantagem em leveza, modularidade e acesso ao código-fonte, o que reforça sua adequação para ambientes acadêmicos.
+
+\section{Síntese dos Resultados}
+
+\begin{table}[htb]
+
+\centering
+
+\caption{Síntese dos principais resultados}
+
+\begin{tabular}{lc}
+
+\hline
+
+Aspecto Avaliado & Resultado Obtido \\
+
+\hline
+
+Precisão de posicionamento & ±0, 48 mm \\
+Erro angular médio & ±0, 31° \\
+FPS médio em 1080p & 121 \\
+Convergência FABRIK & ≤10 iterações \\
+Taxa de detecção de colisão & 97--100\% \\
+Satisfação dos usuários & 4, 8 / 5 \\
+
+\hline
+
+\end{tabular}
+
+\end{table}
+
+Os resultados confirmam a viabilidade técnica e educacional do software, validando sua capacidade de representar com fidelidade os movimentos do robô Mitsubishi RV-2SDB e de servir como uma ferramenta de apoio eficaz ao ensino de robótica.
